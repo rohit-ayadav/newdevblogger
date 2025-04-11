@@ -8,9 +8,11 @@ import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { findEmailFromUserName } from '@/action/checkUserNameAvailability';
 import { isValidEmail } from '@/lib/common-function';
-import { ArrowBigLeft, Home, Loader2 } from 'lucide-react';
+import { AlertCircle, ArrowBigLeft, Home, Loader2 } from 'lucide-react';
 import SocialLogin from '@/components/signup/SocialLogin';
 import Link from 'next/link';
+import { useTheme } from '@/context/ThemeContext';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 interface AuthError {
     message: string;
@@ -25,6 +27,7 @@ export default function Auth() {
     const [error, setError] = useState<AuthError | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const { isDarkMode } = useTheme();
 
     const router = useRouter();
     const { data: session } = useSession();
@@ -32,7 +35,7 @@ export default function Auth() {
     const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
-        setError(null); // Clear error when user types
+        setError(null);
     }, []);
 
     const togglePasswordVisibility = useCallback(() => {
@@ -102,28 +105,27 @@ export default function Auth() {
     }
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-50 py-5 px-4 sm:px-6 lg:px-8">
+        <div className={`min-h-screen flex items-center justify-center py-5 px-4 sm:px-6 lg:px-8 transition-colors duration-200 ${isDarkMode
+                ? 'bg-gray-900 text-gray-100'
+                : 'bg-gray-50 text-gray-900'
+            }`}>
             <div className="max-w-md w-full space-y-8">
-                <div className="flex items-center space-x-4">
-                    <Link href="/">
-                        <Button
-                            variant="ghost"
-                            size="icon"
-                            aria-label="Home"
-                        >
-                            <Home className="h-6 w-6" />
-                        </Button>
-                    </Link>
-                    <h2 className="text-3xl font-extrabold text-gray-900">
+                <div className="flex flex-col items-center space-y-2 sm:space-y-0 sm:flex-row sm:justify-between sm:items-center">
+                    <h2 className={`text-2xl sm:text-3xl font-extrabold ${isDarkMode ? 'text-white' : 'text-gray-900'
+                        }`}>
                         Sign in to your account
                     </h2>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {error && (
-                        <div className="bg-red-50 border border-red-300 text-red-700 px-4 py-3 rounded relative" role="alert">
-                            {error.message}
-                        </div>
+                        <Alert variant="destructive" className={`animate-fadeIn transition-all ${isDarkMode
+                                ? 'bg-red-900/20 border-red-800 text-red-300'
+                                : 'bg-red-50 border-red-300 text-red-700'
+                            }`}>
+                            <AlertCircle className="h-4 w-4 mr-2" />
+                            <AlertDescription>{error.message}</AlertDescription>
+                        </Alert>
                     )}
                     <div className="space-y-4">
                         <div>
@@ -133,8 +135,10 @@ export default function Auth() {
                                 placeholder="Email address or username"
                                 value={formData.email}
                                 onChange={handleInputChange}
-                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 ${error?.field === 'email' ? 'border-red-500' : 'border-gray-300'
-                                    }`}
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none transition-colors ${isDarkMode
+                                        ? 'bg-gray-800 border-gray-700 text-white focus:ring-indigo-400 focus:border-indigo-400'
+                                        : 'bg-white border-gray-300 text-gray-900 focus:ring-indigo-500 focus:border-indigo-500'
+                                    } ${error?.field === 'email' ? (isDarkMode ? 'border-red-500' : 'border-red-500') : ''}`}
                                 aria-label="Email or Username"
                                 required
                             />
@@ -146,8 +150,10 @@ export default function Auth() {
                                 placeholder="Password"
                                 value={formData.password}
                                 onChange={handleInputChange}
-                                className={`w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 pr-10 ${error?.field === 'password' ? 'border-red-500' : 'border-gray-300'
-                                    }`}
+                                className={`w-full px-3 py-2 border rounded-md focus:outline-none pr-10 transition-colors ${isDarkMode
+                                        ? 'bg-gray-800 border-gray-700 text-white focus:ring-indigo-400 focus:border-indigo-400'
+                                        : 'bg-white border-gray-300 text-gray-900 focus:ring-indigo-500 focus:border-indigo-500'
+                                    } ${error?.field === 'password' ? (isDarkMode ? 'border-red-500' : 'border-red-500') : ''}`}
                                 aria-label="Password"
                                 required
                             />
@@ -156,7 +162,8 @@ export default function Auth() {
                                 variant="ghost"
                                 size="sm"
                                 onClick={togglePasswordVisibility}
-                                className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                                className={`absolute inset-y-0 right-0 pr-3 flex items-center ${isDarkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-500 hover:text-gray-700'
+                                    }`}
                                 aria-label={showPassword ? "Hide password" : "Show password"}
                             >
                                 {showPassword ? <FaEyeSlash /> : <FaEye />}
@@ -169,7 +176,7 @@ export default function Auth() {
                             <Button
                                 type="button"
                                 variant="link"
-                                className="text-sm"
+                                className={`text-sm ${isDarkMode ? 'text-indigo-300' : 'text-indigo-600'}`}
                             >
                                 Forgot password?
                             </Button>
@@ -179,7 +186,10 @@ export default function Auth() {
                     <Button
                         type="submit"
                         disabled={isLoading}
-                        className="w-full"
+                        className={`w-full ${isDarkMode
+                                ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                                : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                            }`}
                     >
                         {isLoading ? (
                             <>
@@ -190,12 +200,27 @@ export default function Auth() {
                             'Sign in'
                         )}
                     </Button>
+
+                    <div className="relative">
+                        <div className={`absolute inset-0 flex items-center ${isDarkMode ? 'opacity-70' : ''}`}>
+                            <Separator className={isDarkMode ? 'bg-gray-700' : 'bg-gray-300'} />
+                        </div>
+                        <div className="relative flex justify-center text-xs uppercase">
+                            <span className={`px-2 ${isDarkMode ? 'bg-gray-900 text-gray-400' : 'bg-gray-50 text-gray-500'
+                                }`}>
+                                Or continue with
+                            </span>
+                        </div>
+                    </div>
+
                     <SocialLogin isLoading={isLoading} />
+
                     <div className="text-center">
                         <Link href={`/signup`}>
                             <Button
                                 type="button"
                                 variant="link"
+                                className={isDarkMode ? 'text-indigo-300' : 'text-indigo-600'}
                             >
                                 Don't have an account? Sign up
                             </Button>

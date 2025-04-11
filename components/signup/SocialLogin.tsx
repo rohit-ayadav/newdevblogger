@@ -2,31 +2,51 @@ import { Button } from '../ui/button'
 import { Separator } from '../ui/separator'
 import { signIn } from 'next-auth/react'
 import { FaGithub, FaGoogle } from 'react-icons/fa'
+import { Loader2 } from 'lucide-react'
 
-const SocialLogin = ({ isLoading }: { isLoading: boolean }) => {
+interface SocialLoginProps {
+    isLoading: boolean;
+    isDarkMode?: boolean;
+}
+
+const SocialLogin = ({ isLoading, isDarkMode = false }: SocialLoginProps) => {
     return (
-        <>
-            <Separator>
-                <span className="px-2 text-sm text-gray-500">Or continue with</span>
-            </Separator>
-
+        <div className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
                 <Button
                     variant="outline"
                     onClick={() => signIn('google')}
                     disabled={isLoading}
+                    className={`transition-colors ${isDarkMode
+                            ? 'bg-gray-800 border-gray-700 hover:bg-gray-700 text-white'
+                            : 'bg-white hover:bg-gray-50 text-gray-900'
+                        }`}
                 >
-                    <FaGoogle className="h-5 w-5 mr-2 text-red-500" /> Google
+                    {isLoading ? (
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    ) : (
+                        <FaGoogle className="h-4 w-4 mr-2 text-red-500" />
+                    )}
+                    Google
                 </Button>
                 <Button
                     variant="outline"
                     onClick={() => signIn('github')}
                     disabled={isLoading}
+                    className={`transition-colors ${isDarkMode
+                            ? 'bg-gray-800 border-gray-700 hover:bg-gray-700 text-white'
+                            : 'bg-white hover:bg-gray-50 text-gray-900'
+                        }`}
                 >
-                    <FaGithub className="h-5 w-5 mr-2 text-gray-700" /> GitHub
+                    {isLoading ? (
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    ) : (
+                        <FaGithub className={`h-4 w-4 mr-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`} />
+                    )}
+                    GitHub
                 </Button>
             </div>
-        </>
+        </div>
     )
 }
 

@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import { LogOut, AlertTriangle } from 'lucide-react';
+import { LogOut, AlertTriangle, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useRouter } from 'next/navigation';
@@ -39,60 +39,80 @@ const SignOutPage = () => {
         router.back();
     };
 
-    return (
-        <div className={`${isDarkMode ? 'dark' : ''}`
-        }>
-            <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 p-4" >
-                <Card className="w-full max-w-md border-0 shadow-lg" >
-                    <CardHeader className="text-center" >
-                        <div className="mx-auto mb-4 p-3 bg-red-100 dark:bg-red-900/30 rounded-full" >
-                            <LogOut className="h-8 w-8 text-red-600 dark:text-red-400" />
-                        </div>
-                        < CardTitle className="text-2xl font-bold" > Sign Out </CardTitle>
-                        < CardDescription className="text-gray-600 dark:text-gray-400 mt-2" >
-                            Are you sure you want to sign out of your account ?
-                        </CardDescription>
-                    </CardHeader>
-
-                    < CardContent >
-                        <div className="flex items-start p-4 bg-amber-50 dark:bg-amber-900/20 rounded-lg" >
-                            <AlertTriangle className="h-5 w-5 text-amber-600 dark:text-amber-400 mt-0.5 mr-3 flex-shrink-0" />
-                            <p className="text-sm text-amber-800 dark:text-amber-300" >
-                                You'll need to sign in again to access your account and personalized features.
-                            </p>
-                        </div>
-                    </CardContent>
-
-                    < CardFooter className="flex flex-col sm:flex-row gap-3 sm:gap-4" >
-                        <Button
-                            variant="outline"
-                            onClick={handleCancel}
-                            className="w-full sm:w-1/2 border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800"
-                        >
-                            Cancel
-                        </Button>
-                        < Button
-                            variant="destructive"
-                            onClick={handleSignOut}
-                            disabled={isLoading}
-                            className="w-full sm:w-1/2"
-                        >
-                            {
-                                isLoading ? (
-                                    <>
-                                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" >
-                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" > </circle>
-                                            < path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" > </path>
-                                        </svg>
-                                        Signing out...
-                                    </>
-                                ) : (
-                                    "Sign Out"
-                                )}
-                        </Button>
-                    </CardFooter>
-                </Card>
+    if (status === 'loading') {
+        return (
+            <div className={`min-h-screen flex items-center justify-center transition-colors duration-200 ${isDarkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'
+                }`}>
+                <div className="text-center">
+                    <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
+                    <p>Loading...</p>
+                </div>
             </div>
+        );
+    }
+
+    return (
+        <div className={`min-h-screen flex items-center justify-center transition-colors duration-200 ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'
+            } p-4`}>
+            <Card className={`w-full max-w-md shadow-md border ${isDarkMode ? 'bg-gray-800 border-gray-700 text-white' : 'bg-white border-gray-200 text-gray-900'
+                }`}>
+                <CardHeader className="text-center">
+                    <div className={`mx-auto mb-4 p-3 rounded-full ${isDarkMode ? 'bg-red-900/30' : 'bg-red-100'
+                        }`}>
+                        <LogOut className={`h-8 w-8 ${isDarkMode ? 'text-red-400' : 'text-red-600'
+                            }`} />
+                    </div>
+                    <CardTitle className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'
+                        }`}>
+                        Sign Out
+                    </CardTitle>
+                    <CardDescription className={
+                        isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                    }>
+                        Are you sure you want to sign out of your account?
+                    </CardDescription>
+                </CardHeader>
+
+                <CardContent>
+                    <div className={`flex items-start p-4 rounded-lg ${isDarkMode ? 'bg-amber-900/20' : 'bg-amber-50'
+                        }`}>
+                        <AlertTriangle className={`h-5 w-5 mt-0.5 mr-3 flex-shrink-0 ${isDarkMode ? 'text-amber-400' : 'text-amber-600'
+                            }`} />
+                        <p className={`text-sm ${isDarkMode ? 'text-amber-300' : 'text-amber-800'
+                            }`}>
+                            You'll need to sign in again to access your account and personalized features.
+                        </p>
+                    </div>
+                </CardContent>
+
+                <CardFooter className="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                    <Button
+                        variant="outline"
+                        onClick={handleCancel}
+                        className={`w-full sm:w-1/2 ${isDarkMode
+                                ? 'border-gray-700 hover:bg-gray-700 text-white'
+                                : 'border-gray-300 hover:bg-gray-100 text-gray-800'
+                            }`}
+                    >
+                        Cancel
+                    </Button>
+                    <Button
+                        variant="destructive"
+                        onClick={handleSignOut}
+                        disabled={isLoading}
+                        className="w-full sm:w-1/2"
+                    >
+                        {isLoading ? (
+                            <>
+                                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                                Signing out...
+                            </>
+                        ) : (
+                            "Sign Out"
+                        )}
+                    </Button>
+                </CardFooter>
+            </Card>
         </div>
     );
 };
