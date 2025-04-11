@@ -1,0 +1,17 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /dashboard/
+Disallow: /dashboard/admin/
+Disallow: /login/
+Disallow: /signup/
+Disallow: /forgot-password/
+Disallow: /reset-password/
+Disallow: /edit/
+Disallow: /api/
+Disallow: /unauthorized/
+# Host
+Host: https://www.devblogger.in
+
+# Sitemaps
+Sitemap: https://www.devblogger.in/sitemap.xml

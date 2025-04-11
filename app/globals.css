@@ -1,0 +1,206 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem
+  }
+
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.prose-dark * {
+  color: inherit !important;
+}
+
+@layer utilities {
+  .backdrop-blur {
+    backdrop-filter: blur(8px);
+  }
+}
+
+.animate-shake {
+  animation: shake 0.82s cubic-bezier(.36, .07, .19, .97) both;
+}
+
+@keyframes shake {
+
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
+
+@layer components {
+  .input-field {
+    @apply w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition;
+  }
+}
+
+/* :root {
+  color-scheme: light dark;
+} */
+
+:root {
+  --tw-ring-color: rgba(59, 130, 246, 0.5);
+  /* This is the default ring color */
+  --tw-ring-offset-width: 0px;
+  /* This is the default ring offset width */
+  --tw-ring-offset-color: #fff;
+  /* This is the default ring offset color */
+  --tw-ring-offset-shadow: 0 0 #0000;
+  /* This is the default ring offset shadow */
+  --tw-ring-shadow: 0 0 #0000;
+  /* This is the default ring shadow */
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1200px;
+  }
+}
+
+@layer utilities {
+  ::selection {
+    @apply bg-primary text-primary-foreground;
+  }
+
+  .dark ::selection {
+    @apply bg-secondary text-secondary-foreground;
+  }
+}
+
+
+/* Additional styles for code highlighting */
+pre {
+  @apply bg-gray-800 text-gray-100 dark:bg-gray-900;
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+
+code {
+  @apply font-mono text-sm;
+}
+
+/* Custom scrollbar for code blocks */
+pre::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+pre::-webkit-scrollbar-thumb {
+  @apply bg-gray-500 rounded-full;
+}
+
+pre::-webkit-scrollbar-track {
+  @apply bg-gray-800;
+}
+
+/* Responsive table styles */
+.prose table {
+  @apply w-full;
+  display: table;
+}
+
+@media (max-width: 640px) {
+  .prose thead {
+    @apply hidden;
+  }
+
+  .prose tbody tr {
+    @apply block border-b mb-4;
+  }
+
+  .prose tbody td {
+    @apply block text-right;
+  }
+
+  .prose tbody td::before {
+    content: attr(data-label);
+    @apply float-left font-bold text-left;
+  }
+}

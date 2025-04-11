@@ -1,0 +1,267 @@
+{
+    "id": "com.devbloggers.app",
+    "name": "Dev Blogger",
+    "short_name": "DevBlog",
+    "description": "Your go-to platform for tech blogs, coding tutorials, and developer insights. Join the global dev community to read, write, and share knowledge.",
+    "start_url": "/blogs",
+    "scope": "/",
+    "display": "standalone",
+    "display_override": [
+        "standalone",
+        "minimal-ui",
+        "fullscreen"
+    ],
+    "background_color": "#ffffff",
+    "theme_color": "#ffffff",
+    "dark_theme_color": "#0f172a",
+    "orientation": "any",
+    "launch_handler": {
+        "client_mode": [
+            "focus-existing",
+            "auto"
+        ]
+    },
+    "handle_links": "preferred",
+    "icons": [
+        {
+            "src": "/icons/ios/16.png",
+            "sizes": "16x16",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/ios/20.png",
+            "sizes": "20x20",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/ios/29.png",
+            "sizes": "29x29",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/ios/32.png",
+            "sizes": "32x32",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/ios/40.png",
+            "sizes": "40x40",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/ios/50.png",
+            "sizes": "50x50",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/ios/57.png",
+            "sizes": "57x57",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/ios/58.png",
+            "sizes": "58x58",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/ios/60.png",
+            "sizes": "60x60",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/ios/64.png",
+            "sizes": "64x64",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/ios/72.png",
+            "sizes": "72x72",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/ios/76.png",
+            "sizes": "76x76",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/ios/80.png",
+            "sizes": "80x80",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/ios/87.png",
+            "sizes": "87x87",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/ios/100.png",
+            "sizes": "100x100",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/ios/114.png",
+            "sizes": "114x114",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/ios/120.png",
+            "sizes": "120x120",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/ios/128.png",
+            "sizes": "128x128",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/ios/144.png",
+            "sizes": "144x144",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/ios/152.png",
+            "sizes": "152x152",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/ios/167.png",
+            "sizes": "167x167",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/ios/180.png",
+            "sizes": "180x180",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/ios/192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/ios/256.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/ios/512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/ios/1024.png",
+            "sizes": "1024x1024",
+            "type": "image/png"
+        }
+    ],
+    "shortcuts": [
+        {
+            "name": "Create New Post",
+            "short_name": "New Post",
+            "description": "Start writing a new blog post",
+            "url": "/create?source=pwa",
+            "icons": [
+                {
+                    "src": "/icons/create-96x96.png",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "My Profile",
+            "short_name": "Profile",
+            "description": "View your profile dashboard",
+            "url": "/profile?source=pwa",
+            "icons": [
+                {
+                    "src": "/icons/profile-96x96.png",
+                    "sizes": "96x96"
+                }
+            ]
+        },
+        {
+            "name": "Dashboard",
+            "short_name": "Dashboard",
+            "description": "View your dashboard",
+            "url": "/blogs?source=pwa",
+            "icons": [
+                {
+                    "src": "/icons/all-blogs-96x96.png",
+                    "sizes": "96x96"
+                }
+            ]
+        }
+    ],
+    "categories": [
+        "education",
+        "productivity",
+        "developer-tools",
+        "social",
+        "news",
+        "tech",
+        "coding",
+        "programming",
+        "web-development",
+        "software-engineering",
+        "javascript",
+        "python",
+        "react",
+        "angular",
+        "vue",
+        "nodejs",
+        "express",
+        "mongodb",
+        "sql"
+    ],
+    "share_target": {
+        "action": "/api/share",
+        "method": "POST",
+        "enctype": "multipart/form-data",
+        "params": {
+            "title": "title",
+            "text": "text",
+            "url": "url",
+            "files": [
+                {
+                    "name": "images",
+                    "accept": [
+                        "image/*"
+                    ]
+                }
+            ]
+        }
+    },
+    "protocol_handlers": [
+        {
+            "protocol": "web+devblog",
+            "url": "/blogs/%s"
+        }
+    ],
+    "display_features": [
+        "fullscreen",
+        "standalone",
+        "minimal-ui",
+        "browser",
+        "window-controls-overlay"
+    ],
+    "capture_links": "active",
+    "offline_enabled": true,
+    "navigation_preload": true,
+    "theme_color_adjustment": "lighten",
+    "permissions": [
+        "clipboard-read",
+        "clipboard-write",
+        "geolocation",
+        "notifications",
+        "push"
+    ],
+    "dark-mode": "media",
+    "edge_side_panel": {
+        "preferred_width": 400
+    },
+    "lang": "en",
+    "dir": "ltr",
+    "prefer_related_applications": false,
+    "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7",
+    "gcm_sender_id": "103953800507"
+}
