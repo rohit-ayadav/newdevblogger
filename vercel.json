@@ -1,0 +1,7 @@
+{
+    "build": {
+        "env": {
+            "VERCEL_ALLOW_BUILDS_WITH_POSTINSTALL": "1"
+        }
+    }
+}
