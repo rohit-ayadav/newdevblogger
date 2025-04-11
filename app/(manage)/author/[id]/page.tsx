@@ -117,15 +117,15 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
     };
 }
 
-export async function generateStaticParams() {
-    await connectDB();
-    const posts = await User.find({}, { username: 1, _id: 1 });
+// export async function generateStaticParams() {
+//     await connectDB();
+//     const posts = await User.find({}, { username: 1, _id: 1 });
 
-    return posts.flatMap(post => [
-        { id: post._id.toString() },
-        { id: post.username }
-    ]);
-}
+//     return posts.flatMap(post => [
+//         { id: post._id.toString() },
+//         { id: post.username }
+//     ]);
+// }
 
 export default async function IndividualProfile({ params }: { params: { id: string } }) {
     const response = await getPostData(params.id);
