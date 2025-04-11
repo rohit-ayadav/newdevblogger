@@ -4,7 +4,7 @@ import User from "@/models/users.models";
 import sendOtpModels from "@/models/send-otp.models";
 import sendEmail from "@/action/email/SendEmail";
 import sendOTP from "@/utils/EmailTemplate/send-otp";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 export async function POST(request: NextRequest) {
     try {

@@ -5,7 +5,7 @@ import { connectDB } from "@/utils/db";
 import { SignUpEmailTemplate } from "@/utils/EmailTemplate/auth";
 import { NextRequest, NextResponse } from "next/server";
 await connectDB();
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
