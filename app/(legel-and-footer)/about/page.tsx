@@ -104,10 +104,14 @@ const AboutPage = () => {
                 journey meets content creation.
               </p>
               <div className="mt-8 flex gap-4 flex-wrap">
-                <Button size="lg" className="rounded-md bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600">
+                <Button size="lg" className="rounded-md bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600"
+                  onClick={() => window.location.href = "/create"}
+                >
                   Start Writing <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
-                <Button size="lg" variant="outline" className="rounded-md border-gray-300 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">
+                <Button size="lg" variant="outline" className="rounded-md border-gray-300 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+                  onClick={() => window.location.href = "/blogs"}
+                >
                   Explore Blogs
                 </Button>
               </div>
@@ -298,7 +302,7 @@ const AboutPage = () => {
                     <Instagram size={20} />
                   </a>
                   <a
-                    href="https://github.com/rohitkumaryadav"
+                    href="https://github.com/rohit-ayadav"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-blue-100 hover:text-blue-600 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 transition-colors"
@@ -307,7 +311,7 @@ const AboutPage = () => {
                     <GitHub size={20} />
                   </a>
                   <a
-                    href="https://twitter.com/rohitkumaryadav"
+                    href="https://x.com/rohit_ayadav"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-blue-100 hover:text-blue-600 dark:hover:bg-blue-900/30 dark:hover:text-blue-400 transition-colors"
@@ -335,7 +339,9 @@ const AboutPage = () => {
       <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/30 dark:to-indigo-950/30 py-16 sm:py-20 relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-blue-200 dark:bg-grid-blue-900 [mask-image:linear-gradient(0deg,transparent,black)] opacity-10"></div>
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-          <Badge className="mb-4 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-900/30">
+          <Badge className="mb-4 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-900/30"
+            onClick={() => window.location.href = "/signup"}
+          >
             Get Started
           </Badge>
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl mb-6">
@@ -346,10 +352,14 @@ const AboutPage = () => {
             Start sharing your knowledge, connect with other developers, and build your online presence on a platform designed specifically for technical content creators.
           </p>
           <div className="flex flex-wrap gap-4 justify-center">
-            <Button size="lg" className="rounded-md text-base bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600">
+            <Button size="lg" className="rounded-md text-base bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600"
+              onClick={() => window.location.href = "/signup"}
+            >
               Create Your Account <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
-            <Button size="lg" variant="outline" className="rounded-md border-gray-300 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800">
+            <Button size="lg" variant="outline" className="rounded-md border-gray-300 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+              onClick={() => window.location.href = "/services"}
+            >
               Explore Resources
             </Button>
           </div>
@@ -373,13 +383,13 @@ const AboutPage = () => {
                   <li className="flex items-center gap-3">
                     <Globe className="w-5 h-5 text-blue-500" />
                     <span className="text-gray-700 dark:text-gray-300">
-                      <a href="https://devblogger.in" className="hover:text-blue-600 dark:hover:text-blue-400">devblogger.in</a>
+                      <a href="https://devblogger.in/contacts" className="hover:text-blue-600 dark:hover:text-blue-400">devblogger.in</a>
                     </span>
                   </li>
                   <li className="flex items-center gap-3">
                     <Mail className="w-5 h-5 text-blue-500" />
                     <span className="text-gray-700 dark:text-gray-300">
-                      <a href="mailto:support@devblogger.in" className="hover:text-blue-600 dark:hover:text-blue-400">support@devblogger.in</a>
+                      <a href="mailto:rohitkuyada@gmail.com" className="hover:text-blue-600 dark:hover:text-blue-400">support@devblogger.in</a>
                     </span>
                   </li>
                 </ul>
