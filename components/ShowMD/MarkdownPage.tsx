@@ -35,13 +35,15 @@ const MobileTocDropdown = ({ headings }: { headings: any[] }) => (
 );
 
 
-export default async function MarkdownPage({ filename }: { filename: string }) {
+export default async function MarkdownPage({ filename, directory }: { filename: string, directory?: string }) {
   if (!filename || typeof filename !== 'string') {
     return <ErrorMessage message="Invalid filename provided" />;
   }
-
+  if (directory && typeof directory !== 'string') {
+    return <ErrorMessage message="Invalid directory provided" />;
+  }
   try {
-    const markdownFilePath = path.join(process.cwd(), 'content', `${filename}.md`);
+    const markdownFilePath = path.join(process.cwd(), directory || 'content', filename.endsWith('.md') ? filename : `${filename}.md`);
     const fileExists = await fs.stat(markdownFilePath).then(() => true).catch(() => false);
 
     if (!fileExists) {

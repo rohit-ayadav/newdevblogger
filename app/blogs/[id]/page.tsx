@@ -129,7 +129,7 @@ export async function generateStaticParams() {
     const posts = await Blog.find({}, { slug: 1, _id: 1 });
 
     return posts.flatMap(post => [
-        { id: post._id.toString() },
+        // { id: post._id.toString() },
         { id: post.slug }
     ]);
 }
