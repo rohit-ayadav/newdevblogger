@@ -1,48 +1,49 @@
 import React from 'react';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { BookOpen, Clock, Lightbulb, ChevronRight } from 'lucide-react';
+import { CodeSquare, ChevronRight, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useTheme } from '@/context/ThemeContext';
 import { cn } from '@/lib/utils'; // Assuming you have this utility
 
-const ContentToolsSection = () => {
+const TopCheatsheetsSection = () => {
     const { isDarkMode } = useTheme();
 
-    const tools = [
+    // Top 3 cheatsheets with icons matching your existing style
+    const topCheatsheets = [
+        {
+            icon: <CodeSquare size={48} />,
+            title: "Python Cheatsheet",
+            description: "Quick reference for Python syntax, built-in functions, and common libraries for faster development.",
+            action: "View Cheatsheet",
+            link: "/cheatsheets/python"
+        },
+        {
+            icon: <CodeSquare size={48} />,
+            title: "JavaScript Cheatsheet",
+            description: "Essential JavaScript concepts, ES6+ features, and DOM manipulation techniques in one place.",
+            action: "View Cheatsheet",
+            link: "/cheatsheets/javascript"
+        },
         {
             icon: <BookOpen size={48} />,
-            title: "Content Creation Guide",
-            description: "Learn best practices for creating engaging technical content that resonates with developers.",
-            action: "Read Guide",
-            link: "/guides/content-creation"
-        },
-        {
-            icon: <Clock size={48} />,
-            title: "Reading Time Calculator",
-            description: "Estimate how long it will take readers to consume your content and optimize for engagement.",
-            action: "Calculate Time",
-            link: "/tools/reading-time"
-        },
-        {
-            icon: <Lightbulb size={48} />,
-            title: "Need Blog Ideas?",
-            description: "Discover trending topics and get AI-powered suggestions for your next technical blog post.",
-            action: "Get Ideas",
-            link: "/tools/blog-ideas"
+            title: "Git Commands",
+            description: "Master version control with this comprehensive guide to essential Git commands and workflows.",
+            action: "View Cheatsheet",
+            link: "/cheatsheets/git"
         }
     ];
 
     return (
         <section className={cn(
             "py-16",
-            isDarkMode ? 'bg-gray-900' : 'bg-white'
+            isDarkMode ? 'bg-gray-900' : 'bg-gray-50'
         )}>
             <div className="container mx-auto px-4 sm:px-6">
                 <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
-                    <h2 className="text-3xl font-bold">Content Creation Tools</h2>
-                    <Link href="/tools">
+                    <h2 className="text-3xl font-bold">Popular Cheatsheets</h2>
+                    <Link href="/cheatsheets">
                         <Button
                             variant="default"
                             className={isDarkMode ? "bg-blue-600 hover:bg-blue-700" : ""}
@@ -53,7 +54,7 @@ const ContentToolsSection = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-                    {tools.map((tool, index) => (
+                    {topCheatsheets.map((sheet, index) => (
                         <motion.div
                             key={index}
                             initial={{ opacity: 0, y: 20 }}
@@ -73,27 +74,27 @@ const ContentToolsSection = () => {
                                         "mb-4 flex justify-center",
                                         isDarkMode ? "text-blue-400" : "text-blue-600"
                                     )}>
-                                        {tool.icon}
+                                        {sheet.icon}
                                     </div>
                                     <CardTitle className="text-2xl font-semibold mb-2 text-center">
-                                        {tool.title}
+                                        {sheet.title}
                                     </CardTitle>
                                     <p className={cn(
                                         "mb-4 text-center",
                                         isDarkMode ? "text-gray-300" : "text-gray-600"
                                     )}>
-                                        {tool.description}
+                                        {sheet.description}
                                     </p>
                                 </CardContent>
                                 <CardContent className="pt-0">
-                                    <Link href={tool.link}>
+                                    <Link href={sheet.link}>
                                         <Button className={cn(
                                             "w-full transition-all",
                                             isDarkMode ?
                                                 "bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600" :
                                                 "bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
                                         )}>
-                                            {tool.action} <ChevronRight className="ml-2 h-4 w-4" />
+                                            {sheet.action} <ChevronRight className="ml-2 h-4 w-4" />
                                         </Button>
                                     </Link>
                                 </CardContent>
@@ -106,4 +107,4 @@ const ContentToolsSection = () => {
     );
 };
 
-export default ContentToolsSection;
+export default TopCheatsheetsSection;
