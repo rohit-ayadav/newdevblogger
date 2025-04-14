@@ -8,7 +8,8 @@ import serializeDocument from "@/utils/date-formatter";
 
 async function getPostData() {
     await connectDB();
-    // find all posts, sort by createdAt, limit to 3 and Get all users who created the posts
+    // Fetching the latest 3 posts with status "approved" and their authors
+    // finding all posts, sort by createdAt, limit to 3 and Get all users who created the posts
     const posts = await Blog.find({
         status: "approved"
     }).sort({ createdAt: -1 }).limit(3).lean();
