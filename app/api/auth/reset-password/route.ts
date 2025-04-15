@@ -6,8 +6,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { sendEmail } from "@/action/email/SendEmail";
 import { FPSuccesfullyResetPassword } from "@/utils/EmailTemplate/auth";
 
-connectDB();
-
 export async function POST(req: NextRequest) {
     const { email, token, newPassword } = await req.json();
 
@@ -24,6 +22,7 @@ export async function POST(req: NextRequest) {
     const decryptedEmail = new Cryptr(process.env.CRYPTO_SECRET).decrypt(email);
     const decryptedToken = new Cryptr(process.env.CRYPTO_SECRET).decrypt(token);
 
+    await connectDB();
     const user = await User.findOne({ email: decryptedEmail });
 
     if (!user) {
@@ -40,9 +39,13 @@ export async function POST(req: NextRequest) {
     // Check if the token is valid or not expired
     const isTokenExpired = Date.now() > user.resetPasswordExpires;
     if (isTokenExpired) {
-        user.resetPasswordToken = "";
-        user.resetPasswordExpires = 0;
-        await user.save();
+        await User.updateOne(
+            { _id: user._id },
+            {
+                resetPasswordToken: "",
+                resetPasswordExpires: 0,
+            }
+        );
         return NextResponse.json({
             error: "Token has expired. Please request a new password reset link"
         }, { status: 400 });

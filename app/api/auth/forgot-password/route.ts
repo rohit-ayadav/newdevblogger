@@ -29,12 +29,15 @@ const resetPasswordRequest = async (user: any, req: NextRequest): Promise<{ mess
     } else {
         // Generate a random token for password reset
         resetPasswordToken = cryptoRandomString({ length: 32, type: 'url-safe' });
-        user.resetPasswordToken = resetPasswordToken;
-        user.resetPasswordTokenDate = new Date();
-        user.resetPasswordExpires = currentTime + TokenExpirationTime;
-
         try {
-            await user.save();
+            await User.updateOne(
+                { _id: user._id },
+                {
+                    resetPasswordToken,
+                    resetPasswordTokenDate: new Date(),
+                    resetPasswordExpires: currentTime + TokenExpirationTime,
+                }
+            );
         } catch (error) {
             throw new Error("Error while saving the user");
         }

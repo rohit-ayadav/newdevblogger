@@ -4,13 +4,12 @@ import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import toast from 'react-hot-toast';
 import { Button } from '@/components/ui/button';
-import { AlertCircle, Eye, EyeOff, Home, Loader2 } from 'lucide-react';
+import { AlertCircle, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import LoadingEffect from '@/lib/LoadingEffect';
 import Link from 'next/link';
 import { useTheme } from '@/context/ThemeContext';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Progress } from '@/components/ui/progress';
 
 function PasswordResetContent() {
     const [password, setPassword] = useState('');
@@ -22,7 +21,7 @@ function PasswordResetContent() {
     const [token, setToken] = useState<string | null>(null);
     const [email, setEmail] = useState<string | null>(null);
     const [passwordStrength, setPasswordStrength] = useState(0);
-    const { data, status } = useSession();
+    const { status } = useSession();
     const { isDarkMode } = useTheme();
 
     const router = useRouter();
