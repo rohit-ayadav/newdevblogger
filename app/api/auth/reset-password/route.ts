@@ -44,6 +44,7 @@ export async function POST(req: NextRequest) {
             {
                 resetPasswordToken: "",
                 resetPasswordExpires: 0,
+                updatedAt: new Date(),
             }
         );
         return NextResponse.json({
@@ -57,12 +58,22 @@ export async function POST(req: NextRequest) {
         }, { status: 400 });
     }
 
-    user.password = newPassword;
-    user.resetPasswordToken = "";
-    user.resetPasswordExpires = 0;
-    user.isEmailVerified = true;
-    user.updatedAt = new Date();
-    await user.save();
+    // user.password = newPassword;
+    // user.resetPasswordToken = "";
+    // user.resetPasswordExpires = 0;
+    // user.isEmailVerified = true;
+    // user.updatedAt = new Date();
+    // await user.save();
+    await User.updateOne(
+        { _id: user._id },
+        {
+            password: newPassword,
+            resetPasswordToken: "",
+            resetPasswordExpires: 0,
+            isEmailVerified: true,
+            updatedAt: new Date(),
+        }
+    );
 
     sendEmail({
         to: user.email,

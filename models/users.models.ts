@@ -78,9 +78,9 @@ const userSchema = new mongoose.Schema({
     default: null
   },
   resetPasswordExpires: {
-    type: Number,
+    type: Date,
     required: false,
-    default: 0
+    default: null
   },
   isEmailVerified: {
     type: Boolean,
