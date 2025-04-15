@@ -90,7 +90,8 @@ export default function ForgotPassword() {
                 if (emailFromUserName) {
                     validatedEmail = emailFromUserName;
                 } else {
-                    setError('Invalid email or username');
+                    // setError('Password reset link will be sent to your email if it exists in our database');
+                    setSuccess('Password reset link will be sent to your email if it exists in our database');
                     setIsLoading(false);
                     return;
                 }

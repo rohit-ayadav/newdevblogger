@@ -7,7 +7,7 @@ import Cryptr from "cryptr";
 import { FPEmailTemplate } from "@/utils/EmailTemplate/auth";
 import { sendEmail } from "@/action/email/SendEmail";
 
-const resetPasswordRequest = async (user: any, req: NextRequest) => {
+const resetPasswordRequest = async (user: any, req: NextRequest): Promise<{ message: string }> => {
     const url = new URL(req.url, `http://${req.headers.get('host')}`);
     let resetPasswordToken: string;
     let subject;
@@ -32,7 +32,7 @@ const resetPasswordRequest = async (user: any, req: NextRequest) => {
         user.resetPasswordToken = resetPasswordToken;
         user.resetPasswordTokenDate = new Date();
         user.resetPasswordExpires = currentTime + TokenExpirationTime;
-        
+
         try {
             await user.save();
         } catch (error) {
@@ -62,7 +62,7 @@ const resetPasswordRequest = async (user: any, req: NextRequest) => {
         throw new Error(`Error sending email: ${message}`);
     }
 
-    return { message: "Password reset link has been sent to your email" };
+    return { message: "Password reset link will be sent to your email if it exists in our database" };
 };
 
 export async function POST(req: NextRequest) {
@@ -72,7 +72,7 @@ export async function POST(req: NextRequest) {
 
     if (!email || !username) {
         return NextResponse.json({
-            error: "Email or username is required"
+            error: "Password reset link will be sent to your email if it exists in our database"
         }, { status: 400 });
     }
 
@@ -81,7 +81,7 @@ export async function POST(req: NextRequest) {
         let user = await User.findOne({ $or: [{ email }, { username }] });
         if (!user) {
             return NextResponse.json({
-                error: "User not found"
+                error: "Password reset link will be sent to your email if it exists in our database"
             }, { status: 400 });
         }
 
@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
     } catch (error: any) {
         console.error(`\nError in forgotPassword: ${error}`);
         return NextResponse.json({
-            error: error.message || "An error occurred"
+            error: "An error occurred while processing your request. Please try again later."
         }, { status: 500 });
     }
 }
