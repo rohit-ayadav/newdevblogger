@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
   try {
     const user = await User.findOne({ email: session.user.email });
     if (!user) return sendResponse(404, "User not found");
-    
+
     // console.log(`User theme updated to ${theme} for ${JSON.stringify(session.user)}`);
     return user ? sendResponse(200, "Theme updated successfully") : sendResponse(404, "User not found");
   } catch {
