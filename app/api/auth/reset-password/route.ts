@@ -1,3 +1,4 @@
+// api/auth/reset-password/route.ts
 import User from "@/models/users.models";
 import { connectDB } from "@/utils/db";
 import Cryptr from "cryptr";

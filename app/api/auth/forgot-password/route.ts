@@ -1,3 +1,4 @@
+// api/auth/reset-password/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import User from "@/models/users.models";
 import { connectDB } from "@/utils/db";
@@ -19,7 +20,7 @@ const resetPasswordRequest = async (user: any, req: NextRequest) => {
         throw new Error("Please wait 60 seconds between reset requests");
     }
 
-    const TokenExpirationTime = 600000;
+    const TokenExpirationTime = 600000; // 10 minutes in milliseconds
 
     if (tokenGeneratedAt && (currentTime - tokenGeneratedAt) < TokenExpirationTime) {
 
@@ -30,6 +31,8 @@ const resetPasswordRequest = async (user: any, req: NextRequest) => {
         resetPasswordToken = cryptoRandomString({ length: 32, type: 'url-safe' });
         user.resetPasswordToken = resetPasswordToken;
         user.resetPasswordTokenDate = new Date();
+        user.resetPasswordExpires = currentTime + TokenExpirationTime;
+        
         try {
             await user.save();
         } catch (error) {

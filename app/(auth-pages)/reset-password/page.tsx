@@ -1,3 +1,4 @@
+// app/(auth-pages)/reset-password/page.tsx
 "use client";
 import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';

@@ -75,7 +75,7 @@ const FeaturedAuthors = () => {
             <div className="container mx-auto px-4 sm:px-6">
                 <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
                     <h2 className="text-3xl font-bold">Trending Authors</h2>
-                    <Link href="/authors">
+                    <Link href="/author">
                         <Button
                             variant="default"
                             className={isDarkMode ? "bg-blue-600 hover:bg-blue-700" : ""}
