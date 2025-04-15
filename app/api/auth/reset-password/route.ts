@@ -38,6 +38,7 @@ export async function POST(req: NextRequest) {
     }
     // Check if the token is valid or not expired
     const isTokenExpired = Date.now() > user.resetPasswordExpires;
+    
     if (isTokenExpired) {
         await User.updateOne(
             { _id: user._id },

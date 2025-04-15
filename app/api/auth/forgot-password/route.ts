@@ -20,30 +20,30 @@ const resetPasswordRequest = async (user: any, req: NextRequest): Promise<{ mess
         throw new Error("Please wait 60 seconds between reset requests");
     }
 
-    const TokenExpirationTime = 600000; // 10 minutes in milliseconds
+    // 1 minutes in milliseconds
+    const TokenExpirationTime = 600000; // 1 minute
 
     if (tokenGeneratedAt && (currentTime - tokenGeneratedAt) < TokenExpirationTime) {
-
         resetPasswordToken = user.resetPasswordToken;
         subject = "Password Reset Request for DevBlogger 01 (Extra Email)";
     } else {
         // Generate a random token for password reset
         resetPasswordToken = cryptoRandomString({ length: 32, type: 'url-safe' });
         try {
-            await User.updateOne(
-                { _id: user._id },
-                {
-                    resetPasswordToken,
+            await User.findByIdAndUpdate(user._id, {
+                $set: {
+                    resetPasswordToken: resetPasswordToken,
                     resetPasswordTokenDate: new Date(),
                     resetPasswordExpires: currentTime + TokenExpirationTime,
                 }
-            );
+            }, { new: true });
         } catch (error) {
             throw new Error("Error while saving the user");
         }
         subject = "Password Reset Request for DevBlogger";
     }
 
+    // Rest of your code remains the same...
     // Encrypt the token and email
     if (!process.env.CRYPTO_SECRET) {
         throw new Error("CRYPTO_SECRET is not defined");
@@ -68,7 +68,7 @@ const resetPasswordRequest = async (user: any, req: NextRequest): Promise<{ mess
     return { message: "Password reset link will be sent to your email if it exists in our database" };
 };
 
-export async function POST(req: NextRequest) {
+export async function PUT(req: NextRequest) {
     await connectDB();
 
     const { email, username } = await req.json();
@@ -81,7 +81,13 @@ export async function POST(req: NextRequest) {
 
     try {
         // Look for user by email or username
-        let user = await User.findOne({ $or: [{ email }, { username }] });
+        let user = await User.findOne(
+            {
+            $or:
+            [{ email }, { username }]  
+            }
+        );
+        //found the user either by email or username
         if (!user) {
             return NextResponse.json({
                 error: "Password reset link will be sent to your email if it exists in our database"

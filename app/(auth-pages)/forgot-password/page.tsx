@@ -76,7 +76,7 @@ export default function ForgotPassword() {
 
         setIsLoading(true);
         const trimmedIdentifier = identifier.trim();
-
+         
         if (!trimmedIdentifier) {
             setError('Email or username is required');
             setIsLoading(false);
@@ -99,7 +99,7 @@ export default function ForgotPassword() {
 
             // Send password reset request
             const response = await fetch('/api/auth/forgot-password', {
-                method: 'POST',
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
