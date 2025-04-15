@@ -20,8 +20,8 @@ const resetPasswordRequest = async (user: any, req: NextRequest): Promise<{ mess
         throw new Error("Please wait 60 seconds between reset requests");
     }
 
-    // 1 minutes in milliseconds
-    const TokenExpirationTime = 600000; // 1 minute
+    // 10 minutes in milliseconds
+    const TokenExpirationTime = 10 * 60 * 1000; // 10 minutes
 
     if (tokenGeneratedAt && (currentTime - tokenGeneratedAt) < TokenExpirationTime) {
         resetPasswordToken = user.resetPasswordToken;
@@ -83,8 +83,8 @@ export async function PUT(req: NextRequest) {
         // Look for user by email or username
         let user = await User.findOne(
             {
-            $or:
-            [{ email }, { username }]  
+                $or:
+                    [{ email }, { username }]
             }
         );
         //found the user either by email or username

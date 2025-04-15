@@ -1,5 +1,4 @@
-// app/[id]/page.tsx
-import { notFound } from 'next/navigation';
+// app/(content)/cheatsheets/[id]/page.tsx
 import fs from 'fs/promises';
 import path from 'path';
 import MarkdownPage from '@/components/ShowMD/MarkdownPage';
@@ -10,7 +9,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
     const { id } = params;
 
     try {
-        const filePath = path.join(process.cwd(), 'content', `${id}.md`);
+        const filePath = path.join(process.cwd(), 'content/cheatsheets', `${id}.md`);
         await fs.access(filePath);
 
         const fileContent = await fs.readFile(filePath, 'utf8');
@@ -18,9 +17,7 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
         const title = titleMatch ? titleMatch[1] : 'Document';
         // thumbnail in public folder
         const thumbnailPath = path.join(process.cwd(), 'public/content', `${id}.png`);
-        // check if thumbnail exists
         const thumbnailExists = await fs.access(thumbnailPath).then(() => true).catch(() => false);
-        // const thumbnailUrl = thumbnailExists ? `https://www.devblogger.in/content/${id}.png` : 'default-thumbnail.png';
         const thumbnailUrl = thumbnailExists ? `https://www.devblogger.in/content/${id}.png` : 'https://www.devblogger.in/default-thumbnail.png';
         return {
             title,
@@ -49,33 +46,23 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
     }
 }
 
-// getStaticPaths
-export async function generateStaticParams() {
-    const contentDir = path.join(process.cwd(), 'content');
-    const files = await fs.readdir(contentDir);
-    const paths = files.map((file) => ({
-        id: file.replace(/\.md$/, ''),
-    }));
-
-    return paths;
-}
-
 export default async function MDPage({ params }: { params: { id: string } }) {
     const { id } = params;
     try {
-        const filePath = path.join(process.cwd(), 'content', `${id}.md`);
+        const filePath = path.join(process.cwd(), 'content/cheatsheets', `${id}.md`);
         await fs.access(filePath);
         await incrementView(id, false, true);
-        return <MarkdownPage filename={id} />;
+        return (
+            <MarkdownPage filename={`${id}.md`} directory='content/cheatsheets' />
+        );
     } catch (error) {
-        notFound();
+        return (
+            <h1 className='text-2xl font-bold text-center mt-4 mb-8'>
+                <span className='text-gray-800 dark:text-gray-200'>Cheat Sheet</span>
+                <span className='text-indigo-600 dark:text-indigo-400'> - {id}</span>
+                <span className='text-red-600 dark:text-red-400'> - Not Found</span>
+            </h1>
+        )
+        // notFound();
     }
 }
-
-/* 
-1. open-source-guide
-2. react-guide
-3. react-interview-questions
-4. sql-interview-questions
-5. python-interview-questions
-*/
