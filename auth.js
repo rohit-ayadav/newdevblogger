@@ -62,7 +62,11 @@ export const authOptions = {
         secret: process.env.JWT_SECRET,
         maxAge: 5 * 24 * 60 * 60, // 5 days
     },
-
+    pages: {
+        signIn: '/login',
+        error: '/login/error',
+        signOut: '/signout',
+    },
     callbacks: {
         async jwt({ token, user, account }) {
             if (user) {

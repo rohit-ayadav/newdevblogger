@@ -106,8 +106,8 @@ export default function Auth() {
 
     return (
         <div className={`min-h-screen flex items-center justify-center py-5 px-4 sm:px-6 lg:px-8 transition-colors duration-200 ${isDarkMode
-                ? 'bg-gray-900 text-gray-100'
-                : 'bg-gray-50 text-gray-900'
+            ? 'bg-gray-900 text-gray-100'
+            : 'bg-gray-50 text-gray-900'
             }`}>
             <div className="max-w-md w-full space-y-8">
                 <div className="flex flex-col items-center space-y-2 sm:space-y-0 sm:flex-row sm:justify-between sm:items-center">
@@ -120,8 +120,8 @@ export default function Auth() {
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {error && (
                         <Alert variant="destructive" className={`animate-fadeIn transition-all ${isDarkMode
-                                ? 'bg-red-900/20 border-red-800 text-red-300'
-                                : 'bg-red-50 border-red-300 text-red-700'
+                            ? 'bg-red-900/20 border-red-800 text-red-300'
+                            : 'bg-red-50 border-red-300 text-red-700'
                             }`}>
                             <AlertCircle className="h-4 w-4 mr-2" />
                             <AlertDescription>{error.message}</AlertDescription>
@@ -136,8 +136,8 @@ export default function Auth() {
                                 value={formData.email}
                                 onChange={handleInputChange}
                                 className={`w-full px-3 py-2 border rounded-md focus:outline-none transition-colors ${isDarkMode
-                                        ? 'bg-gray-800 border-gray-700 text-white focus:ring-indigo-400 focus:border-indigo-400'
-                                        : 'bg-white border-gray-300 text-gray-900 focus:ring-indigo-500 focus:border-indigo-500'
+                                    ? 'bg-gray-800 border-gray-700 text-white focus:ring-indigo-400 focus:border-indigo-400'
+                                    : 'bg-white border-gray-300 text-gray-900 focus:ring-indigo-500 focus:border-indigo-500'
                                     } ${error?.field === 'email' ? (isDarkMode ? 'border-red-500' : 'border-red-500') : ''}`}
                                 aria-label="Email or Username"
                                 required
@@ -151,8 +151,8 @@ export default function Auth() {
                                 value={formData.password}
                                 onChange={handleInputChange}
                                 className={`w-full px-3 py-2 border rounded-md focus:outline-none pr-10 transition-colors ${isDarkMode
-                                        ? 'bg-gray-800 border-gray-700 text-white focus:ring-indigo-400 focus:border-indigo-400'
-                                        : 'bg-white border-gray-300 text-gray-900 focus:ring-indigo-500 focus:border-indigo-500'
+                                    ? 'bg-gray-800 border-gray-700 text-white focus:ring-indigo-400 focus:border-indigo-400'
+                                    : 'bg-white border-gray-300 text-gray-900 focus:ring-indigo-500 focus:border-indigo-500'
                                     } ${error?.field === 'password' ? (isDarkMode ? 'border-red-500' : 'border-red-500') : ''}`}
                                 aria-label="Password"
                                 required
@@ -187,8 +187,8 @@ export default function Auth() {
                         type="submit"
                         disabled={isLoading}
                         className={`w-full ${isDarkMode
-                                ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
-                                : 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                            ? 'bg-indigo-600 hover:bg-indigo-700 text-white'
+                            : 'bg-indigo-600 hover:bg-indigo-700 text-white'
                             }`}
                     >
                         {isLoading ? (
@@ -201,32 +201,32 @@ export default function Auth() {
                         )}
                     </Button>
 
-                    <div className="relative">
-                        <div className={`absolute inset-0 flex items-center ${isDarkMode ? 'opacity-70' : ''}`}>
-                            <Separator className={isDarkMode ? 'bg-gray-700' : 'bg-gray-300'} />
-                        </div>
-                        <div className="relative flex justify-center text-xs uppercase">
-                            <span className={`px-2 ${isDarkMode ? 'bg-gray-900 text-gray-400' : 'bg-gray-50 text-gray-500'
-                                }`}>
-                                Or continue with
-                            </span>
-                        </div>
-                    </div>
-
-                    <SocialLogin isLoading={isLoading} />
-
-                    <div className="text-center">
-                        <Link href={`/signup`}>
-                            <Button
-                                type="button"
-                                variant="link"
-                                className={isDarkMode ? 'text-indigo-300' : 'text-indigo-600'}
-                            >
-                                Don't have an account? Sign up
-                            </Button>
-                        </Link>
-                    </div>
                 </form>
+                <div className="relative">
+                    <div className={`absolute inset-0 flex items-center ${isDarkMode ? 'opacity-70' : ''}`}>
+                        <Separator className={isDarkMode ? 'bg-gray-700' : 'bg-gray-300'} />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                        <span className={`px-2 ${isDarkMode ? 'bg-gray-900 text-gray-400' : 'bg-gray-50 text-gray-500'
+                            }`}>
+                            Or continue with
+                        </span>
+                    </div>
+                </div>
+
+                <SocialLogin isLoading={isLoading} isDarkMode={isDarkMode} />
+
+                <div className="text-center">
+                    <Link href={`/signup`}>
+                        <Button
+                            type="button"
+                            variant="link"
+                            className={isDarkMode ? 'text-indigo-300' : 'text-indigo-600'}
+                        >
+                            Don't have an account? Sign up
+                        </Button>
+                    </Link>
+                </div>
             </div>
         </div>
     );

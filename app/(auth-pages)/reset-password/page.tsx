@@ -131,10 +131,16 @@ function PasswordResetContent() {
         return isDarkMode ? 'bg-green-600' : 'bg-green-500';
     };
 
+    useEffect(() => {
+        if (error) {
+            setError(null);
+        }
+    }, [password, confirmPassword, token, email]);
+
     return (
         <div className={`min-h-screen flex items-center justify-center py-5 px-4 sm:px-6 lg:px-8 transition-colors duration-200 ${isDarkMode
-                ? 'bg-gray-900 text-gray-100'
-                : 'bg-gray-50 text-gray-900'
+            ? 'bg-gray-900 text-gray-100'
+            : 'bg-gray-50 text-gray-900'
             }`}>
             <div className="max-w-md w-full space-y-8">
                 <div className="flex flex-col items-center space-y-2 sm:space-y-0 sm:flex-row sm:justify-between sm:items-center">
@@ -147,8 +153,8 @@ function PasswordResetContent() {
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {error && (
                         <Alert variant="destructive" className={`animate-fadeIn transition-all ${isDarkMode
-                                ? 'bg-red-900/20 border-red-800 text-red-300'
-                                : 'bg-red-50 border-red-300 text-red-700'
+                            ? 'bg-red-900/20 border-red-800 text-red-300'
+                            : 'bg-red-50 border-red-300 text-red-700'
                             }`}>
                             <AlertCircle className="h-4 w-4 mr-2" />
                             <AlertDescription>{error}</AlertDescription>
@@ -164,8 +170,8 @@ function PasswordResetContent() {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                     className={`w-full px-3 py-2 border rounded-md focus:outline-none pr-10 transition-colors ${isDarkMode
-                                            ? 'bg-gray-800 border-gray-700 text-white focus:ring-indigo-400 focus:border-indigo-400'
-                                            : 'bg-white border-gray-300 text-gray-900 focus:ring-indigo-500 focus:border-indigo-500'
+                                        ? 'bg-gray-800 border-gray-700 text-white focus:ring-indigo-400 focus:border-indigo-400'
+                                        : 'bg-white border-gray-300 text-gray-900 focus:ring-indigo-500 focus:border-indigo-500'
                                         } ${error && !error.includes('match') && !error.includes('link') ? 'border-red-500' : ''}`}
                                     required
                                     autoComplete='new-password'
@@ -214,8 +220,8 @@ function PasswordResetContent() {
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 className={`w-full px-3 py-2 border rounded-md focus:outline-none pr-10 transition-colors ${isDarkMode
-                                        ? 'bg-gray-800 border-gray-700 text-white focus:ring-indigo-400 focus:border-indigo-400'
-                                        : 'bg-white border-gray-300 text-gray-900 focus:ring-indigo-500 focus:border-indigo-500'
+                                    ? 'bg-gray-800 border-gray-700 text-white focus:ring-indigo-400 focus:border-indigo-400'
+                                    : 'bg-white border-gray-300 text-gray-900 focus:ring-indigo-500 focus:border-indigo-500'
                                     } ${error && error.includes('match') ? 'border-red-500' : ''}`}
                                 required
                                 autoComplete='new-password'
@@ -238,8 +244,8 @@ function PasswordResetContent() {
                         type="submit"
                         disabled={isLoading || Boolean(error)}
                         className={`w-full ${isDarkMode
-                                ? 'bg-indigo-600 hover:bg-indigo-700 text-white disabled:bg-indigo-800 disabled:text-gray-300'
-                                : 'bg-indigo-600 hover:bg-indigo-700 text-white disabled:bg-indigo-300'
+                            ? 'bg-indigo-600 hover:bg-indigo-700 text-white disabled:bg-indigo-800 disabled:text-gray-300'
+                            : 'bg-indigo-600 hover:bg-indigo-700 text-white disabled:bg-indigo-300'
                             }`}
                     >
                         {isLoading ? (

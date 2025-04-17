@@ -11,6 +11,9 @@ importers:
       '@auth/core':
         specifier: ^0.34.2
         version: 0.34.2(nodemailer@6.9.16)
+      '@auth/mongodb-adapter':
+        specifier: ^3.8.0
+        version: 3.8.0(mongodb@6.10.0)(nodemailer@6.9.16)
       '@auth/prisma-adapter':
         specifier: ^2.6.0
         version: 2.7.2(@prisma/client@5.21.1)(nodemailer@6.9.16)
@@ -469,6 +472,25 @@ packages:
         optional: true
       nodemailer:
         optional: true
+
+  '@auth/core@0.38.0':
+    resolution: {integrity: sha512-ClHl44x4cY3wfJmHLpW+XrYqED0fZIzbHmwbExltzroCjR5ts3DLTWzADRba8mJFYZ8JIEJDa+lXnGl0E9Bl7Q==, tarball: https://registry.npmjs.org/@auth/core/-/core-0.38.0.tgz}
+    peerDependencies:
+      '@simplewebauthn/browser': ^9.0.1
+      '@simplewebauthn/server': ^9.0.2
+      nodemailer: ^6.8.0
+    peerDependenciesMeta:
+      '@simplewebauthn/browser':
+        optional: true
+      '@simplewebauthn/server':
+        optional: true
+      nodemailer:
+        optional: true
+
+  '@auth/mongodb-adapter@3.8.0':
+    resolution: {integrity: sha512-09SQVJW6ci7HP7638RZZvUgC9YPuEw801Zrzh9bt5YMFFLI8dKckY7OFRcpwOhmkrwojfkpArCn5t3+5cNQeTQ==, tarball: https://registry.npmjs.org/@auth/mongodb-adapter/-/mongodb-adapter-3.8.0.tgz}
+    peerDependencies:
+      mongodb: ^6
 
   '@auth/prisma-adapter@2.7.2':
     resolution: {integrity: sha512-orznIVt6aQMoJ4/rfWFSpRPU8LoZn6jVtDuEkZgLud2xSnCalq6x+hX+rqlk4E5LM13NW1GIJojOPQnM4aM4Gw==, tarball: https://registry.npmjs.org/@auth/prisma-adapter/-/prisma-adapter-2.7.2.tgz}
@@ -2934,6 +2956,9 @@ packages:
   jose@5.9.6:
     resolution: {integrity: sha512-AMlnetc9+CV9asI19zHmrgS/WYsWUwCn2R7RzlbJWD7F9eWYUTGyBmU9o6PxngtLGOiDGPRu+Uc4fhKzbpteZQ==, tarball: https://registry.npmjs.org/jose/-/jose-5.9.6.tgz}
 
+  jose@6.0.10:
+    resolution: {integrity: sha512-skIAxZqcMkOrSwjJvplIPYrlXGpxTPnro2/QWTDCxAdWQrSTV5/KqspMWmi5WAx5+ULswASJiZ0a+1B/Lxt9cw==, tarball: https://registry.npmjs.org/jose/-/jose-6.0.10.tgz}
+
   js-string-escape@1.0.1:
     resolution: {integrity: sha512-Smw4xcfIQ5LVjAOuJCvN/zIodzA/BBSsluuoSykP+lUvScIi4U6RJLfwHet5cxFnCswUjISV8oAXaqaJDY3chg==, tarball: https://registry.npmjs.org/js-string-escape/-/js-string-escape-1.0.1.tgz}
     engines: {node: '>= 0.8'}
@@ -3519,6 +3544,9 @@ packages:
   oauth4webapi@3.1.1:
     resolution: {integrity: sha512-0h4FZjsntbKQ5IHGM9mFT7uOwQCRdcTG7YhC0xXlWIcCch24wUa6Vggaipa3Sw6Ab7nEnmO4rctROmyuHBfP7Q==, tarball: https://registry.npmjs.org/oauth4webapi/-/oauth4webapi-3.1.1.tgz}
 
+  oauth4webapi@3.5.0:
+    resolution: {integrity: sha512-DF3mLWNuxPkxJkHmWxbSFz4aE5CjWOsm465VBfBdWzmzX4Mg3vF8icxK+iKqfdWrIumBJ2TaoNQWx+SQc2bsPQ==, tarball: https://registry.npmjs.org/oauth4webapi/-/oauth4webapi-3.5.0.tgz}
+
   oauth@0.9.15:
     resolution: {integrity: sha512-a5ERWK1kh38ExDEfoO6qUHJb32rd7aYmPHuyCu3Fta/cnICvYmgd2uhuKXvPD+PXB+gCEYYEaQdIRAjCOwAKNA==, tarball: https://registry.npmjs.org/oauth/-/oauth-0.9.15.tgz}
 
@@ -3679,6 +3707,11 @@ packages:
 
   preact-render-to-string@5.2.6:
     resolution: {integrity: sha512-JyhErpYOvBV1hEPwIxc/fHWXPfnEGdRKxc8gFdAZ7XV4tlzyzG847XAyEZqoDnynP88akM4eaHcSOzNcLWFguw==, tarball: https://registry.npmjs.org/preact-render-to-string/-/preact-render-to-string-5.2.6.tgz}
+    peerDependencies:
+      preact: '>=10'
+
+  preact-render-to-string@6.5.11:
+    resolution: {integrity: sha512-ubnauqoGczeGISiOh6RjX0/cdaF8v/oDXIjO85XALCQjwQP+SB4RDXXtvZ6yTYSjG+PC1QRP2AhPgCEsM2EvUw==, tarball: https://registry.npmjs.org/preact-render-to-string/-/preact-render-to-string-6.5.11.tgz}
     peerDependencies:
       preact: '>=10'
 
@@ -4618,6 +4651,25 @@ snapshots:
       preact-render-to-string: 5.2.3(preact@10.11.3)
     optionalDependencies:
       nodemailer: 6.9.16
+
+  '@auth/core@0.38.0(nodemailer@6.9.16)':
+    dependencies:
+      '@panva/hkdf': 1.2.1
+      jose: 6.0.10
+      oauth4webapi: 3.5.0
+      preact: 10.24.3
+      preact-render-to-string: 6.5.11(preact@10.24.3)
+    optionalDependencies:
+      nodemailer: 6.9.16
+
+  '@auth/mongodb-adapter@3.8.0(mongodb@6.10.0)(nodemailer@6.9.16)':
+    dependencies:
+      '@auth/core': 0.38.0(nodemailer@6.9.16)
+      mongodb: 6.10.0
+    transitivePeerDependencies:
+      - '@simplewebauthn/browser'
+      - '@simplewebauthn/server'
+      - nodemailer
 
   '@auth/prisma-adapter@2.7.2(@prisma/client@5.21.1)(nodemailer@6.9.16)':
     dependencies:
@@ -7346,6 +7398,8 @@ snapshots:
 
   jose@5.9.6: {}
 
+  jose@6.0.10: {}
+
   js-string-escape@1.0.1: {}
 
   js-tokens@4.0.0: {}
@@ -8229,6 +8283,8 @@ snapshots:
 
   oauth4webapi@3.1.1: {}
 
+  oauth4webapi@3.5.0: {}
+
   oauth@0.9.15: {}
 
   object-assign@4.1.1: {}
@@ -8382,6 +8438,10 @@ snapshots:
     dependencies:
       preact: 10.24.3
       pretty-format: 3.8.0
+
+  preact-render-to-string@6.5.11(preact@10.24.3):
+    dependencies:
+      preact: 10.24.3
 
   preact@10.11.3: {}
 

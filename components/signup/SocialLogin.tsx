@@ -9,7 +9,7 @@ interface SocialLoginProps {
     isDarkMode?: boolean;
 }
 
-const SocialLogin = ({ isLoading, isDarkMode = false }: SocialLoginProps) => {
+const SocialLogin = ({ isLoading, isDarkMode}: SocialLoginProps) => {
     return (
         <div className="space-y-4">
             <div className="grid grid-cols-2 gap-3">
@@ -17,8 +17,8 @@ const SocialLogin = ({ isLoading, isDarkMode = false }: SocialLoginProps) => {
                     variant="outline"
                     onClick={() => signIn('google')}
                     disabled={isLoading}
-                    className={`transition-colors ${isDarkMode
-                            ? 'bg-gray-800 border-gray-700 hover:bg-gray-700 text-white'
+                    className={`${isDarkMode
+                            ? 'bg-gray-800 border-gray-700 hover:bg-gray-700 text-white hover:text-gray-200'   
                             : 'bg-white hover:bg-gray-50 text-gray-900'
                         }`}
                 >
