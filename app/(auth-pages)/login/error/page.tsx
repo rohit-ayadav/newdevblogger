@@ -12,23 +12,17 @@ import { AlertCircle, ArrowLeft, ExternalLink, KeyRound, Loader2, LockIcon, LogI
 import LoadingEffect from '@/lib/LoadingEffect';
 
 interface AuthErrorProps {
-    callbackUrl?: string;
+    callbackUrl: string;
+    error: string | null;
+    email: string | null;
+    provider: string | null;
 }
 
-function AuthError({ callbackUrl: propCallbackUrl }: AuthErrorProps) {
+function AuthError({ callbackUrl, error, email, provider }: AuthErrorProps) {
     const router = useRouter();
-    const searchParams = useSearchParams();
-    const error = searchParams.get('error');
     const [isLinking, setIsLinking] = useState(false);
     const [isRedirecting, setIsRedirecting] = useState(false);
     const { isDarkMode } = useTheme();
-
-    // Process the callbackUrl if present, prioritize prop over search param
-    const callbackUrl = propCallbackUrl || searchParams.get('callbackUrl') || '/';
-
-    // Get the email from the query params (if available)
-    const email = searchParams.get('email') || '';
-    const provider = searchParams.get('provider') || '';
 
     useEffect(() => {
         // Pre-fetch the login page for faster transition
@@ -94,8 +88,8 @@ function AuthError({ callbackUrl: propCallbackUrl }: AuthErrorProps) {
                     <div className={`p-6 rounded-lg shadow-md ${isDarkMode ? 'bg-gray-800 shadow-gray-900/60' : 'bg-white shadow-gray-200/60'
                         }`}>
                         <Alert variant="destructive" className={`mb-4 animate-fadeIn transition-all ${isDarkMode
-                                ? 'bg-yellow-900/20 border-yellow-800 text-yellow-300'
-                                : 'bg-yellow-50 border-yellow-300 text-yellow-700'
+                            ? 'bg-yellow-900/20 border-yellow-800 text-yellow-300'
+                            : 'bg-yellow-50 border-yellow-300 text-yellow-700'
                             }`}>
                             <AlertCircle className="h-4 w-4 mr-2" />
                             <AlertDescription>
@@ -139,8 +133,8 @@ function AuthError({ callbackUrl: propCallbackUrl }: AuthErrorProps) {
                                 onClick={handleLinkAccounts}
                                 disabled={isLinking}
                                 className={`w-full ${isDarkMode
-                                        ? 'bg-indigo-600 hover:bg-indigo-700 text-white disabled:bg-indigo-800/50 disabled:text-gray-300'
-                                        : 'bg-indigo-600 hover:bg-indigo-700 text-white disabled:bg-indigo-300'
+                                    ? 'bg-indigo-600 hover:bg-indigo-700 text-white disabled:bg-indigo-800/50 disabled:text-gray-300'
+                                    : 'bg-indigo-600 hover:bg-indigo-700 text-white disabled:bg-indigo-300'
                                     }`}
                             >
                                 {isLinking ? (
@@ -161,8 +155,8 @@ function AuthError({ callbackUrl: propCallbackUrl }: AuthErrorProps) {
                                 disabled={isRedirecting}
                                 variant="outline"
                                 className={`w-full ${isDarkMode
-                                        ? 'border-gray-700 bg-gray-800 hover:bg-gray-700 text-gray-200'
-                                        : 'border-gray-300 bg-white hover:bg-gray-50 text-gray-800'
+                                    ? 'border-gray-700 bg-gray-800 hover:bg-gray-700 text-gray-200'
+                                    : 'border-gray-300 bg-white hover:bg-gray-50 text-gray-800'
                                     }`}
                             >
                                 {isRedirecting ? (
@@ -199,8 +193,8 @@ function AuthError({ callbackUrl: propCallbackUrl }: AuthErrorProps) {
                 <div className={`p-6 rounded-lg shadow-md ${isDarkMode ? 'bg-gray-800 shadow-gray-900/60' : 'bg-white shadow-gray-200/60'
                     }`}>
                     <Alert variant="destructive" className={`mb-4 animate-fadeIn transition-all ${isDarkMode
-                            ? 'bg-red-900/20 border-red-800 text-red-300'
-                            : 'bg-red-50 border-red-300 text-red-700'
+                        ? 'bg-red-900/20 border-red-800 text-red-300'
+                        : 'bg-red-50 border-red-300 text-red-700'
                         }`}>
                         <AlertCircle className="h-4 w-4 mr-2" />
                         <AlertDescription>
@@ -247,8 +241,8 @@ function AuthError({ callbackUrl: propCallbackUrl }: AuthErrorProps) {
                             onClick={handleReturnToSignIn}
                             disabled={isRedirecting}
                             className={`w-full ${isDarkMode
-                                    ? 'bg-indigo-600 hover:bg-indigo-700 text-white disabled:bg-indigo-800/50 disabled:text-gray-300'
-                                    : 'bg-indigo-600 hover:bg-indigo-700 text-white disabled:bg-indigo-300'
+                                ? 'bg-indigo-600 hover:bg-indigo-700 text-white disabled:bg-indigo-800/50 disabled:text-gray-300'
+                                : 'bg-indigo-600 hover:bg-indigo-700 text-white disabled:bg-indigo-300'
                                 }`}
                         >
                             {isRedirecting ? (
@@ -269,8 +263,8 @@ function AuthError({ callbackUrl: propCallbackUrl }: AuthErrorProps) {
                                 <Button
                                     variant="outline"
                                     className={`w-full mt-3 ${isDarkMode
-                                            ? 'border-gray-700 bg-gray-800 hover:bg-gray-700 text-gray-200'
-                                            : 'border-gray-300 bg-white hover:bg-gray-50 text-gray-800'
+                                        ? 'border-gray-700 bg-gray-800 hover:bg-gray-700 text-gray-200'
+                                        : 'border-gray-300 bg-white hover:bg-gray-50 text-gray-800'
                                         }`}
                                 >
                                     <LockIcon className="mr-2 h-4 w-4" />
@@ -299,10 +293,13 @@ function AuthenticationError() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const callbackUrl = searchParams.get('callbackUrl') || '/';
+    const error = searchParams.get('error') || null;
+    const email = searchParams.get('email') || null;
+    const provider = searchParams.get('provider') || null;
 
     return (
         <React.Suspense fallback={<LoadingEffect />}>
-            <AuthError callbackUrl={callbackUrl} />
+            <AuthError callbackUrl={callbackUrl} error={error} email={email} provider={provider} />
         </React.Suspense>
     );
 }
