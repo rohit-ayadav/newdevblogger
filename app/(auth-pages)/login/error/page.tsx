@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 import { useState, useEffect } from 'react';
@@ -8,8 +9,13 @@ import { useTheme } from '@/context/ThemeContext';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle, ArrowLeft, ExternalLink, KeyRound, Loader2, LockIcon, LogIn, Mail } from 'lucide-react';
+import LoadingEffect from '@/lib/LoadingEffect';
 
-export default function AuthError() {
+interface AuthErrorProps {
+    callbackUrl?: string;
+}
+
+function AuthError({ callbackUrl: propCallbackUrl }: AuthErrorProps) {
     const router = useRouter();
     const searchParams = useSearchParams();
     const error = searchParams.get('error');
@@ -17,8 +23,8 @@ export default function AuthError() {
     const [isRedirecting, setIsRedirecting] = useState(false);
     const { isDarkMode } = useTheme();
 
-    // Process the callbackUrl if present
-    const callbackUrl = searchParams.get('callbackUrl') || '/';
+    // Process the callbackUrl if present, prioritize prop over search param
+    const callbackUrl = propCallbackUrl || searchParams.get('callbackUrl') || '/';
 
     // Get the email from the query params (if available)
     const email = searchParams.get('email') || '';
@@ -88,8 +94,8 @@ export default function AuthError() {
                     <div className={`p-6 rounded-lg shadow-md ${isDarkMode ? 'bg-gray-800 shadow-gray-900/60' : 'bg-white shadow-gray-200/60'
                         }`}>
                         <Alert variant="destructive" className={`mb-4 animate-fadeIn transition-all ${isDarkMode
-                            ? 'bg-yellow-900/20 border-yellow-800 text-yellow-300'
-                            : 'bg-yellow-50 border-yellow-300 text-yellow-700'
+                                ? 'bg-yellow-900/20 border-yellow-800 text-yellow-300'
+                                : 'bg-yellow-50 border-yellow-300 text-yellow-700'
                             }`}>
                             <AlertCircle className="h-4 w-4 mr-2" />
                             <AlertDescription>
@@ -133,8 +139,8 @@ export default function AuthError() {
                                 onClick={handleLinkAccounts}
                                 disabled={isLinking}
                                 className={`w-full ${isDarkMode
-                                    ? 'bg-indigo-600 hover:bg-indigo-700 text-white disabled:bg-indigo-800/50 disabled:text-gray-300'
-                                    : 'bg-indigo-600 hover:bg-indigo-700 text-white disabled:bg-indigo-300'
+                                        ? 'bg-indigo-600 hover:bg-indigo-700 text-white disabled:bg-indigo-800/50 disabled:text-gray-300'
+                                        : 'bg-indigo-600 hover:bg-indigo-700 text-white disabled:bg-indigo-300'
                                     }`}
                             >
                                 {isLinking ? (
@@ -155,8 +161,8 @@ export default function AuthError() {
                                 disabled={isRedirecting}
                                 variant="outline"
                                 className={`w-full ${isDarkMode
-                                    ? 'border-gray-700 bg-gray-800 hover:bg-gray-700 text-gray-200'
-                                    : 'border-gray-300 bg-white hover:bg-gray-50 text-gray-800'
+                                        ? 'border-gray-700 bg-gray-800 hover:bg-gray-700 text-gray-200'
+                                        : 'border-gray-300 bg-white hover:bg-gray-50 text-gray-800'
                                     }`}
                             >
                                 {isRedirecting ? (
@@ -193,8 +199,8 @@ export default function AuthError() {
                 <div className={`p-6 rounded-lg shadow-md ${isDarkMode ? 'bg-gray-800 shadow-gray-900/60' : 'bg-white shadow-gray-200/60'
                     }`}>
                     <Alert variant="destructive" className={`mb-4 animate-fadeIn transition-all ${isDarkMode
-                        ? 'bg-red-900/20 border-red-800 text-red-300'
-                        : 'bg-red-50 border-red-300 text-red-700'
+                            ? 'bg-red-900/20 border-red-800 text-red-300'
+                            : 'bg-red-50 border-red-300 text-red-700'
                         }`}>
                         <AlertCircle className="h-4 w-4 mr-2" />
                         <AlertDescription>
@@ -226,7 +232,7 @@ export default function AuthError() {
                                     <li>Request a new verification email</li>
                                 </>
                             )}
-                            {!['CredentialsSignin', 'SessionRequired', 'Verification'].includes(error || '') && (
+                            {error !== 'CredentialsSignin' && error !== 'SessionRequired' && error !== 'Verification' && (
                                 <>
                                     <li>Try signing in again</li>
                                     <li>Clear your browser cookies and cache</li>
@@ -241,8 +247,8 @@ export default function AuthError() {
                             onClick={handleReturnToSignIn}
                             disabled={isRedirecting}
                             className={`w-full ${isDarkMode
-                                ? 'bg-indigo-600 hover:bg-indigo-700 text-white disabled:bg-indigo-800/50 disabled:text-gray-300'
-                                : 'bg-indigo-600 hover:bg-indigo-700 text-white disabled:bg-indigo-300'
+                                    ? 'bg-indigo-600 hover:bg-indigo-700 text-white disabled:bg-indigo-800/50 disabled:text-gray-300'
+                                    : 'bg-indigo-600 hover:bg-indigo-700 text-white disabled:bg-indigo-300'
                                 }`}
                         >
                             {isRedirecting ? (
@@ -263,8 +269,8 @@ export default function AuthError() {
                                 <Button
                                     variant="outline"
                                     className={`w-full mt-3 ${isDarkMode
-                                        ? 'border-gray-700 bg-gray-800 hover:bg-gray-700 text-gray-200'
-                                        : 'border-gray-300 bg-white hover:bg-gray-50 text-gray-800'
+                                            ? 'border-gray-700 bg-gray-800 hover:bg-gray-700 text-gray-200'
+                                            : 'border-gray-300 bg-white hover:bg-gray-50 text-gray-800'
                                         }`}
                                 >
                                     <LockIcon className="mr-2 h-4 w-4" />
@@ -288,3 +294,17 @@ export default function AuthError() {
         </div>
     );
 }
+
+function AuthenticationError() {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const callbackUrl = searchParams.get('callbackUrl') || '/';
+
+    return (
+        <React.Suspense fallback={<LoadingEffect />}>
+            <AuthError callbackUrl={callbackUrl} />
+        </React.Suspense>
+    );
+}
+
+export default AuthenticationError;
