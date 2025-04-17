@@ -11,18 +11,21 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle, ArrowLeft, ExternalLink, KeyRound, Loader2, LockIcon, LogIn, Mail } from 'lucide-react';
 import LoadingEffect from '@/lib/LoadingEffect';
 
-interface AuthErrorProps {
-    callbackUrl: string;
-    error: string | null;
-    email: string | null;
-    provider: string | null;
-}
 
-function AuthError({ callbackUrl, error, email, provider }: AuthErrorProps) {
+function AuthError() {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const error = searchParams.get('error');
     const [isLinking, setIsLinking] = useState(false);
     const [isRedirecting, setIsRedirecting] = useState(false);
     const { isDarkMode } = useTheme();
+
+    // Process the callbackUrl if present, prioritize prop over search param
+    const callbackUrl = searchParams.get('callbackUrl') || '/';
+
+    // Get the email from the query params (if available)
+    const email = searchParams.get('email') || '';
+    const provider = searchParams.get('provider') || '';
 
     useEffect(() => {
         // Pre-fetch the login page for faster transition
@@ -290,16 +293,9 @@ function AuthError({ callbackUrl, error, email, provider }: AuthErrorProps) {
 }
 
 function AuthenticationError() {
-    const router = useRouter();
-    const searchParams = useSearchParams();
-    const callbackUrl = searchParams.get('callbackUrl') || '/';
-    const error = searchParams.get('error') || null;
-    const email = searchParams.get('email') || null;
-    const provider = searchParams.get('provider') || null;
-
     return (
         <React.Suspense fallback={<LoadingEffect />}>
-            <AuthError callbackUrl={callbackUrl} error={error} email={email} provider={provider} />
+            <AuthError />
         </React.Suspense>
     );
 }
