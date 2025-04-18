@@ -187,7 +187,6 @@ const BlogPostFooter = ({
     setIsGeneratingPdf(true);
     try {
       const date = post.createdAt ? new Date(post.createdAt).toLocaleDateString() : new Date().toLocaleDateString();
-      alert(`Thumbnail: ${post.thumbnail}`)
       await generateSimplePdf({
         title: post.title,
         content: post.content,
