@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Heart, Eye, Share2 } from 'lucide-react';
+import { Heart, Eye, Share2, FileText, Download } from 'lucide-react';
 import { HeartFilledIcon } from '@radix-ui/react-icons';
 import { SiWhatsapp, SiFacebook, SiX, SiLinkedin } from 'react-icons/si';
 import { toast } from 'react-hot-toast';
@@ -20,6 +20,7 @@ import { cn } from '@/lib/utils';
 import { BlogPostType } from '@/types/blogs-types';
 import { dislikePost, likePost } from '@/action/like';
 import { useTheme } from '@/context/ThemeContext';
+import { generateSimplePdf } from '@/utils/pdf-generator';
 
 interface BlogPostFooterProps {
   post: BlogPostType;
@@ -46,6 +47,7 @@ const BlogPostFooter = ({
   const [isLiked, setIsLiked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [shareUrl, setShareUrl] = useState('');
+  const [isGeneratingPdf, setIsGeneratingPdf] = useState(false);
 
   const { isDarkMode } = useTheme();
 
@@ -179,6 +181,32 @@ const BlogPostFooter = ({
     }
   };
 
+  const handleDownloadPdf = async () => {
+    if (isGeneratingPdf) return;
+
+    setIsGeneratingPdf(true);
+    try {
+      const date = post.createdAt ? new Date(post.createdAt).toLocaleDateString() : new Date().toLocaleDateString();
+
+      await generateSimplePdf({
+        title: post.title,
+        content: post.content,
+        isMarkdown: true,
+        logoUrl: post.thumbnail || 'https://www.devblogger.in/default-thumbnail.png',
+        filename: `${post.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.pdf`,
+        author: post.createdBy || 'DevBlogger',
+        date: date
+      });
+
+      toast.success('PDF downloaded successfully!');
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      toast.error('Failed to download PDF. Trying fallback...');
+    } finally {
+      setIsGeneratingPdf(false);
+    }
+  };
+
   return (
     <div
       className={cn(
@@ -196,9 +224,10 @@ const BlogPostFooter = ({
                 size="sm"
                 onClick={handleLike}
                 disabled={isLoading}
-                className={cn("transition-all", isLiked ? "text-red-500 hover:text-red-600" : isDarkMode ? "text-gray-300 hover:text-gray-100" : "text-gray-600 hover:text-gray-800")}              >
+                className={cn("transition-all", isLiked ? "text-red-500 hover:text-red-600" : isDarkMode ? "text-gray-300 hover:text-gray-100" : "text-gray-600 hover:text-gray-800")}
+              >
                 {isLiked ? (<HeartFilledIcon className="h-5 w-5 mr-2" />) : (<Heart className="h-5 w-5 mr-2" />)}
-                <span className={`font-medium ${isDarkMode ? "text-gray-300" : "text-gray-700"}`}>{likes}</span>
+                <span className={`font-medium ${isDarkMode ? "text-gray-300" : "text-gray-700"}`}>{likes} likes</span>
               </Button>
             </TooltipTrigger>
             <TooltipContent>
@@ -225,12 +254,50 @@ const BlogPostFooter = ({
                   className={`font-medium ${isDarkMode ? "text-gray-300" : "text-gray-700"
                     }`}
                 >
-                  {views}
+                  {views} views
                 </span>
               </Button>
             </TooltipTrigger>
             <TooltipContent>
               <p>Total views</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleDownloadPdf}
+                disabled={isGeneratingPdf}
+                className={`
+                  ${isDarkMode
+                    ? "text-gray-300 hover:text-gray-100"
+                    : "text-gray-600 hover:text-gray-800"
+                  }
+                `}
+              >
+                {isGeneratingPdf ? (
+                  <>
+                    <span className="inline-block h-5 w-5 mr-2 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em]"></span>
+                    <span className={`font-medium ${isDarkMode ? "text-gray-300" : "text-gray-700"}`}>
+                      Generating...
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    <Download className="h-5 w-5 mr-2" />
+                    <span className={`font-medium ${isDarkMode ? "text-gray-300" : "text-gray-700"}`}>
+                      PDF
+                    </span>
+                  </>
+                )}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Download as PDF</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -287,6 +354,10 @@ const BlogPostFooter = ({
             <DropdownMenuContent align="end">
               <DropdownMenuItem onClick={copyToClipboard}>
                 Copy link
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handleDownloadPdf}>
+                <FileText className="h-4 w-4 mr-2" />
+                Download as PDF
               </DropdownMenuItem>
               {shareOptions.map((option) => (
                 <DropdownMenuItem
