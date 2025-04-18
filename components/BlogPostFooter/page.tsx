@@ -201,7 +201,7 @@ const BlogPostFooter = ({
       toast.success('PDF downloaded successfully!');
     } catch (error) {
       console.error('Error generating PDF:', error);
-      toast.error('Failed to download PDF. Trying fallback...');
+      toast.error('Failed to download PDF');
     } finally {
       setIsGeneratingPdf(false);
     }
