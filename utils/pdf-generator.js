@@ -45,6 +45,7 @@ export const generateSimplePdf = async (options) => {
         img.onerror = reject;
         img.src = thumbnailUrl;
       });
+      console.log('Image loaded:', img.src + ' and Source: ' + thumbnailUrl);
 
       const imgWidth = 100;
       const aspectRatio = img.width / img.height;
@@ -93,29 +94,22 @@ export const generateSimplePdf = async (options) => {
     pdf.addPage();
 
     // The content area
+    let sections = [];
 
-    let textContent = content;
     if (isMarkdown) {
       const html = marked.parse(content);
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, 'text/html');
-      textContent = doc.body.textContent || '';
+
+      sections = processHtmlContent(html);
+    } else {
+      sections = formatContentToSections(content);
     }
 
-    // Content formatting
     let currentY = margin;
-    pdf.setFontSize(11);
-    pdf.setTextColor(50, 50, 50);
-    pdf.setFont('helvetica', 'normal');
-
-    // Process content in sections
-    const sections = formatContentToSections(textContent);
 
     for (let i = 0; i < sections.length; i++) {
       const section = sections[i];
 
       if (section.type === 'heading') {
-        console.log(`Heading detected: ${section.text} level: ${section.level}`);
         // Check for page break before heading
         if (currentY > pageHeight - 50) {
           pdf.addPage();
@@ -123,9 +117,11 @@ export const generateSimplePdf = async (options) => {
         }
 
         // Heading size based on level
-        let fontSize = 16;
-        if (section.level === 2) fontSize = 14;
-        if (section.level === 3) fontSize = 12;
+        let fontSize = 20;  // H1
+        if (section.level === 2) fontSize = 18;
+        if (section.level === 3) fontSize = 16;
+        if (section.level === 4) fontSize = 14;
+        if (section.level >= 5) fontSize = 12;
 
         pdf.setFontSize(fontSize);
         pdf.setFont('helvetica', 'bold');
@@ -133,7 +129,9 @@ export const generateSimplePdf = async (options) => {
 
         const headingLines = pdf.splitTextToSize(section.text, contentWidth);
         pdf.text(headingLines, margin, currentY);
-        currentY += (headingLines.length * (fontSize / 2)) + 5;
+
+        // Add more space after headings
+        currentY += (headingLines.length * (fontSize / 2)) + 8;
       }
       else if (section.type === 'paragraph') {
         // Check for page break
@@ -148,7 +146,9 @@ export const generateSimplePdf = async (options) => {
 
         const lines = pdf.splitTextToSize(section.text, contentWidth);
         pdf.text(lines, margin, currentY);
-        currentY += (lines.length * 6) + 5;
+
+        // Add proper spacing between paragraphs
+        currentY += (lines.length * 7) + 10;
       }
       else if (section.type === 'code') {
         // Check for page break
@@ -158,11 +158,11 @@ export const generateSimplePdf = async (options) => {
         }
 
         // Code block styling
-        pdf.setFillColor(245, 245, 245);
-        pdf.setTextColor(80, 80, 80);
+        pdf.setFillColor(240, 240, 240);
+        pdf.setTextColor(60, 60, 60);
 
         const codeLines = pdf.splitTextToSize(section.text.trim(), contentWidth - 10);
-        const codeHeight = (codeLines.length * 5) + 10;
+        const codeHeight = (codeLines.length * 6) + 10;
 
         // Draw background
         pdf.roundedRect(margin - 5, currentY - 5, contentWidth + 10, codeHeight, 2, 2, 'F');
@@ -171,7 +171,7 @@ export const generateSimplePdf = async (options) => {
         pdf.setFont('courier', 'normal');
         pdf.setFontSize(9);
         pdf.text(codeLines, margin, currentY);
-        currentY += codeHeight + 10;
+        currentY += codeHeight + 12;
 
         // Reset to normal text style
         pdf.setFont('helvetica', 'normal');
@@ -187,10 +187,13 @@ export const generateSimplePdf = async (options) => {
 
         pdf.setFontSize(11);
         pdf.setFont('helvetica', 'normal');
+        pdf.setTextColor(50, 50, 50);
 
-        const items = section.text.split('\n');
+        const items = section.items || [];
+        const listIndent = 5;
+
         for (let j = 0; j < items.length; j++) {
-          const item = items[j].trim();
+          const item = items[j];
           if (!item) continue;
 
           if (currentY > pageHeight - 20) {
@@ -198,10 +201,121 @@ export const generateSimplePdf = async (options) => {
             currentY = margin;
           }
 
-          const bulletLines = pdf.splitTextToSize(`• ${item}`, contentWidth - 5);
-          pdf.text(bulletLines, margin + 5, currentY);
-          currentY += (bulletLines.length * 6) + 3;
+          const bulletLines = pdf.splitTextToSize(item, contentWidth - 15);
+
+          // Draw bullet or number
+          const bulletChar = section.ordered ? `${j + 1}.` : '•';
+          pdf.text(bulletChar, margin + 2, currentY);
+
+          // Draw list item text with indent
+          pdf.text(bulletLines, margin + listIndent + 8, currentY);
+
+          // Add proper spacing between list items
+          currentY += (bulletLines.length * 6) + 5;
         }
+
+        // Add extra space after list
+        currentY += 5;
+      }
+      else if (section.type === 'image') {
+        // Handle images (placeholder for now)
+        if (currentY > pageHeight - 60) {
+          pdf.addPage();
+          currentY = margin;
+        }
+
+        pdf.setFontSize(10);
+        pdf.setFont('helvetica', 'italic');
+        pdf.setTextColor(100, 100, 100);
+        pdf.text(`[Image: ${section.alt || 'Figure'}]`, margin, currentY);
+        currentY += 20;
+      }
+      else if (section.type === 'table') {
+        // Handle tables
+        if (currentY > pageHeight - 50) {
+          pdf.addPage();
+          currentY = margin;
+        }
+
+        if (section.rows && section.rows.length > 0) {
+          const rows = section.rows;
+          const cellPadding = 5;
+          const lineHeight = 7;
+          const columnCount = rows[0].length;
+          const columnWidth = contentWidth / columnCount;
+
+          // Draw header row
+          pdf.setFont('helvetica', 'bold');
+          pdf.setFillColor(240, 240, 240);
+
+          let rowY = currentY;
+          let maxRowHeight = 0;
+
+          // Draw header cells
+          for (let c = 0; c < columnCount; c++) {
+            const cellText = rows[0][c] || '';
+            const cellLines = pdf.splitTextToSize(cellText, columnWidth - (2 * cellPadding));
+            const cellHeight = (cellLines.length * lineHeight) + (2 * cellPadding);
+            maxRowHeight = Math.max(maxRowHeight, cellHeight);
+
+            // Draw cell background
+            pdf.rect(margin + (c * columnWidth), rowY, columnWidth, cellHeight, 'F');
+
+            // Draw cell text
+            pdf.text(cellLines, margin + (c * columnWidth) + cellPadding, rowY + cellPadding + 4);
+          }
+
+          rowY += maxRowHeight;
+
+          // Draw data rows
+          pdf.setFont('helvetica', 'normal');
+
+          for (let r = 1; r < rows.length; r++) {
+            maxRowHeight = 0;
+
+            // Draw cell backgrounds with alternating colors
+            if (r % 2 === 0) {
+              pdf.setFillColor(248, 248, 248);
+            } else {
+              pdf.setFillColor(255, 255, 255);
+            }
+
+            for (let c = 0; c < columnCount; c++) {
+              const cellText = rows[r][c] || '';
+              const cellLines = pdf.splitTextToSize(cellText, columnWidth - (2 * cellPadding));
+              const cellHeight = (cellLines.length * lineHeight) + (2 * cellPadding);
+              maxRowHeight = Math.max(maxRowHeight, cellHeight);
+
+              // Draw cell background
+              pdf.rect(margin + (c * columnWidth), rowY, columnWidth, cellHeight, 'F');
+
+              // Draw cell text
+              pdf.text(cellLines, margin + (c * columnWidth) + cellPadding, rowY + cellPadding + 4);
+            }
+
+            rowY += maxRowHeight;
+
+            // Check if we need a page break
+            if (rowY > pageHeight - 30 && r < rows.length - 1) {
+              pdf.addPage();
+              rowY = margin;
+            }
+          }
+
+          currentY = rowY + 10;
+        }
+      }
+      else if (section.type === 'horizontal-rule') {
+        // Handle horizontal rules
+        if (currentY > pageHeight - 30) {
+          pdf.addPage();
+          currentY = margin;
+        }
+
+        pdf.setDrawColor(180, 180, 180);
+        pdf.setLineWidth(0.5);
+        pdf.line(margin, currentY, pageWidth - margin, currentY);
+        currentY += 15;
       }
     }
 
@@ -233,12 +347,149 @@ export const generateSimplePdf = async (options) => {
   }
 };
 
+// New function to process HTML content properly
+function processHtmlContent(html) {
+  const sections = [];
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+
+  // Process the DOM to extract structured content
+  processNode(doc.body, sections);
+
+  return sections;
+}
+
+// Helper function to process DOM nodes recursively
+function processNode(node, sections, currentListItems = null) {
+  if (!node) return;
+
+  // Skip empty text nodes
+  if (node.nodeType === Node.TEXT_NODE) {
+    const text = node.textContent.trim();
+    if (text && !currentListItems && sections.length > 0 &&
+      sections[sections.length - 1].type === 'paragraph') {
+      // Append to the last paragraph if this is continued text
+      sections[sections.length - 1].text += ' ' + text;
+    } else if (text && !currentListItems) {
+      sections.push({ type: 'paragraph', text });
+    }
+    return;
+  }
+
+  // Process element nodes
+  if (node.nodeType === Node.ELEMENT_NODE) {
+    const tagName = node.tagName.toLowerCase();
+
+    // Handle different element types
+    if (tagName.match(/^h[1-6]$/)) {
+      // Headings
+      const level = parseInt(tagName.substring(1));
+      sections.push({
+        type: 'heading',
+        level,
+        text: node.textContent.trim()
+      });
+    }
+    else if (tagName === 'p') {
+      // Paragraphs
+      const text = node.textContent.trim();
+      if (text) {
+        sections.push({ type: 'paragraph', text });
+      }
+    }
+    else if (tagName === 'pre') {
+      // Code blocks
+      const codeNode = node.querySelector('code');
+      const code = codeNode ? codeNode.textContent : node.textContent;
+      if (code.trim()) {
+        sections.push({ type: 'code', text: code });
+      }
+    }
+    else if (tagName === 'code' && node.parentElement.tagName.toLowerCase() !== 'pre') {
+      // Inline code - handled within paragraph text
+      return;
+    }
+    else if (tagName === 'ul' || tagName === 'ol') {
+      // Lists
+      const items = [];
+      const listType = { type: 'list', items, ordered: tagName === 'ol' };
+
+      // Process list items
+      const listItems = node.querySelectorAll('li');
+      listItems.forEach(li => {
+        items.push(li.textContent.trim());
+      });
+
+      if (items.length > 0) {
+        sections.push(listType);
+      }
+    }
+    else if (tagName === 'li' && currentListItems) {
+      // List items - handled in the parent list processing
+      currentListItems.push(node.textContent.trim());
+    }
+    else if (tagName === 'img') {
+      // Images
+      sections.push({
+        type: 'image',
+        alt: node.getAttribute('alt') || '',
+        src: node.getAttribute('src') || ''
+      });
+    }
+    else if (tagName === 'table') {
+      // Tables
+      const rows = [];
+      const tableRows = node.querySelectorAll('tr');
+
+      tableRows.forEach(tr => {
+        const cells = [];
+        const tableCells = tr.querySelectorAll('th, td');
+
+        tableCells.forEach(cell => {
+          cells.push(cell.textContent.trim());
+        });
+
+        if (cells.length > 0) {
+          rows.push(cells);
+        }
+      });
+
+      if (rows.length > 0) {
+        sections.push({ type: 'table', rows });
+      }
+    }
+    else if (tagName === 'hr') {
+      // Horizontal rules
+      sections.push({ type: 'horizontal-rule' });
+    }
+    else if (tagName === 'blockquote') {
+      // Blockquotes - treat as special paragraphs
+      const text = node.textContent.trim();
+      if (text) {
+        sections.push({
+          type: 'paragraph',
+          text: `"${text}"`,
+          isBlockquote: true
+        });
+      }
+    }
+    else {
+      // Process children for other elements
+      const childNodes = node.childNodes;
+      for (let i = 0; i < childNodes.length; i++) {
+        processNode(childNodes[i], sections, currentListItems);
+      }
+    }
+  }
+}
+
 function splitTextIntoSections(text) {
   const lines = text.split('\n');
   const sections = [];
   let currentSection = { type: 'paragraph', text: '' };
   let inCodeBlock = false;
   let inList = false;
+  let listItems = [];
 
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
@@ -278,21 +529,26 @@ function splitTextIntoSections(text) {
     }
 
     // List item
-    const listMatch = /^(\d+\.\s+|[-+*•]\s+)/.exec(trimmed);
+    const listMatch = /^(\d+\.\s+|[-+*•]\s+)(.+)$/.exec(trimmed);
     if (listMatch) {
       if (!inList) {
         if (currentSection.text.trim()) sections.push(currentSection);
-        currentSection = { type: 'list', text: trimmed + '\n' };
+        listItems = [listMatch[2].trim()];
         inList = true;
       } else {
-        currentSection.text += trimmed + '\n';
+        listItems.push(listMatch[2].trim());
       }
       continue;
     }
 
     // End of list on blank line
     if (trimmed === '' && inList) {
-      sections.push(currentSection);
+      sections.push({
+        type: 'list',
+        items: listItems,
+        ordered: listItems.length > 0 && /^\d+\./.test(lines[i - listItems.length].trim())
+      });
+      listItems = [];
       currentSection = { type: 'paragraph', text: '' };
       inList = false;
       continue;
@@ -310,11 +566,25 @@ function splitTextIntoSections(text) {
         currentSection = { type: 'paragraph', text: '' };
       }
 
-      currentSection.text += (currentSection.text ? ' ' : '') + trimmed;
+      // Add newlines between paragraphs instead of spaces
+      if (currentSection.text) {
+        currentSection.text += '\n' + trimmed;
+      } else {
+        currentSection.text = trimmed;
+      }
     }
   }
 
-  if (currentSection.text.trim()) {
+  // Handle any remaining list
+  if (inList && listItems.length > 0) {
+    sections.push({
+      type: 'list',
+      items: listItems,
+      ordered: /^\d+\./.test(lines[lines.length - listItems.length].trim())
+    });
+  }
+  // Handle any remaining section
+  else if (currentSection.text.trim()) {
     sections.push(currentSection);
   }
 
@@ -324,21 +594,6 @@ function splitTextIntoSections(text) {
 function formatContentToSections(rawContent) {
   const contentType = detectContentType(rawContent);
   if (!rawContent) return [];
-  let processedText = rawContent;
 
-  if (contentType === 'html') {
-    // Option 1: Convert to markdown-like plain text
-    processedText = htmlToText(rawContent, {
-      wordwrap: false,
-      selectors: [
-        { selector: 'h1', format: 'heading', options: { uppercase: false } },
-        { selector: 'h2', format: 'heading' },
-        { selector: 'ul', format: 'list' },
-        { selector: 'pre', format: 'code' },
-        { selector: 'code', format: 'inlineCode' }
-      ]
-    });
-  }
-
-  return splitTextIntoSections(processedText);
+  return splitTextIntoSections(rawContent);
 }

@@ -187,12 +187,12 @@ const BlogPostFooter = ({
     setIsGeneratingPdf(true);
     try {
       const date = post.createdAt ? new Date(post.createdAt).toLocaleDateString() : new Date().toLocaleDateString();
-
+      alert(`Thumbnail: ${post.thumbnail}`)
       await generateSimplePdf({
         title: post.title,
         content: post.content,
         isMarkdown: true,
-        logoUrl: post.thumbnail || 'https://www.devblogger.in/default-thumbnail.png',
+        logoUrl: post.thumbnail,
         filename: `${post.title.replace(/[^a-z0-9]/gi, '-').toLowerCase()}.pdf`,
         author: post.createdBy || 'DevBlogger',
         date: date
