@@ -59,13 +59,7 @@ function EditBlogComponent({ BlogData }: { BlogData: EditBlogState }) {
     const sanitizeContent = {
         title: (title: string) => DOMPurify.sanitize(title.slice(0, 250)),
         tags: (tag: string) => DOMPurify.sanitize(tag),
-        content: (value: string) => {
-            if (state.editorMode === 'markdown') {
-                const md = new MarkdownIt({ html: true });
-                return DOMPurify.sanitize(md.render(value));
-            }
-            return DOMPurify.sanitize(value);
-        }
+        content: (value: string) => value
     };
 
     const validateForm = (state: EditBlogState) => {

@@ -1,3 +1,4 @@
+// context/ThemeContext.tsx
 "use client";
 import { createContext, useContext } from "react";
 import { useDarkMode } from "../hooks/useDarkMode";
