@@ -23,6 +23,7 @@ webpush.setVapidDetails(
 const blogSchema = Joi.object({
   title: Joi.string().required(),
   content: Joi.string().required(),
+  status: Joi.string().valid("draft", "private", "pending_review", "approved").required(),
   tags: Joi.array().items(Joi.string()).optional(),
   language: Joi.string().valid("html", "markdown").optional()
 });
