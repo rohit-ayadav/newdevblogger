@@ -41,6 +41,7 @@ const validateBlogPost = (state: BlogState): string | null => {
     if (!state.title?.trim()) return 'Title is required';
     if (!state.htmlContent?.trim() && !state.markdownContent?.trim()) return 'Content is required';
     if (!state.category) return 'Category is required';
+    if (state.slug && state.slug.length > 100) return 'Slug must be less than 100 characters';
     if (!state.tags?.length) return 'At least one tag is required';
     return null;
 };
