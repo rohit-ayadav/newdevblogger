@@ -50,7 +50,7 @@ const FeatureBlog = ({ posts, users, isDarkMode, isTechNews }: { posts: BlogPost
                                 Hand-picked articles from our top contributors that shouldn't be missed
                             </p>
                         </div>
-                        <Link href="/blogs">
+                        <Link href={isTechNews ? "/tech-news" : "/blogs"}>
                             <Button
                                 variant="default"
                                 className={cn(
