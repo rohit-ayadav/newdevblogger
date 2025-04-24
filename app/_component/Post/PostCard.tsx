@@ -145,7 +145,7 @@ export const PostCard = ({ post, user, showActions = false, author }: BlogPostCa
     return (
         <Card className={`h-full overflow-hidden flex flex-col transition-all duration-300 hover:shadow-md ${isDarkMode ? 'dark bg-zinc-900 hover:shadow-zinc-800 border-zinc-800' : 'bg-white hover:shadow-gray-200 border-gray-200'} group`}>
             <Link
-                href={`/blogs/${post.slug}`}
+                href={post.category === 'Tech-news' ? `/tech-news/${post.slug}` : `/blogs/${post.slug}`}
                 className="flex-1 flex flex-col group relative"
                 title={`Read "${post.title}"`}
             >

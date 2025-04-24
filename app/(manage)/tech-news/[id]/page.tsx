@@ -13,6 +13,7 @@ import { isValidSlug } from '@/lib/common-function';
 import serializeDocument from '@/utils/date-formatter';
 import { revalidateBlog } from '@/action/revalidate-post';
 import { ErrorMessage } from '@/lib/ErrorMessage';
+
 interface ApiResponse {
     success: boolean;
     statusCode: number;
@@ -34,9 +35,9 @@ async function getPostData(id: string): Promise<ApiResponse> {
 
         if (!post || Object.keys(post).length === 0 || ['draft', 'archived', 'deleted'].includes(post.status)) {
             return {
-            success: false,
-            statusCode: 404,
-            error: 'Blog post not found'
+                success: false,
+                statusCode: 404,
+                error: 'Blog post not found'
             };
         }
 

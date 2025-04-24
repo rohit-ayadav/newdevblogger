@@ -116,7 +116,7 @@ const FeatureBlog = ({ posts, users, isDarkMode, isTechNews }: { posts: BlogPost
                     {/* Load more button (only shown when there are more than 3 posts) */}
                     {posts.length > 3 && (
                         <div className="mt-12 text-center">
-                            <Link href="/blogs">
+                            <Link href={isTechNews ? "/tech-news" : "/blogs"}>
                                 <Button
                                     variant="outline"
                                     size="lg"
