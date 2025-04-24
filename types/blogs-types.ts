@@ -189,6 +189,7 @@ export interface stateType {
   };
   statsLoading: boolean;
   initialized: boolean;
+  techNews: boolean;
 }
 
 export type { BlogPostType, UserType, StatsType, Author, TOCItem, ThemeClasses, BlogState };

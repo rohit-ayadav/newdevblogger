@@ -11,9 +11,14 @@ async function getPostData() {
     // Fetching the latest 3 posts with status "approved" and their authors
     // finding all posts, sort by createdAt, limit to 3 and Get all users who created the posts
     const posts = await Blog.find({
-        status: "approved"
-    }).sort({ createdAt: -1 }).limit(3).lean();
+        status: "approved",
+        category: { $ne: "Tech-news" } // Exclude Tech-news category
+    }).sort({ createdAt: -1 }).limit(4).lean();
     const users = await User.find({ email: { $in: posts.map(post => post.createdBy) } }).lean();
+    const techNewsPosts = await Blog.find({
+        category: "Tech-news",
+        status: "approved"
+    }).sort({ createdAt: -1 }).limit(4).lean();
 
     const totalBlogs = await Blog.countDocuments();
     const totalUsers = await User.countDocuments();
@@ -24,11 +29,13 @@ async function getPostData() {
 
     const serializedPosts = posts.map(post => serializeDocument(post));
     const serializedUsers = users.map(user => serializeDocument(user));
+    const serializedTechNewsPosts = techNewsPosts.map(post => serializeDocument(post));
 
     return {
         success: true,
         posts: serializedPosts as BlogPostType[],
         users: serializedUsers as UserType[],
+        techNewsPosts: serializedTechNewsPosts as BlogPostType[],
         totalBlogs,
         totalUsers,
         totalLikes,
@@ -61,9 +68,9 @@ export async function generateMetadata() {
 }
 
 export default async function HomePage1() {
-    const { success, posts, users, totalBlogs, totalUsers, totalLikes, totalViews } = await getPostData();
+    const { success, posts, users, totalBlogs, totalUsers, totalLikes, totalViews, techNewsPosts } = await getPostData();
     if (!success) {
         return <ErrorMessage message="An error occurred while fetching data. Please try again later." />
     }
-    return <HomePage posts={posts} users={users} totalLikes={totalLikes} totalViews={totalViews} totalBlogs={totalBlogs} totalUsers={totalUsers} />;
+    return <HomePage posts={posts} users={users} totalLikes={totalLikes} totalViews={totalViews} totalBlogs={totalBlogs} totalUsers={totalUsers} techNewsPosts={techNewsPosts} />;
 }

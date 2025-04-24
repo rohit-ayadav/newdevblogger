@@ -25,6 +25,7 @@ type QueryParams = {
     author?: string;
     readingTime?: string;
     dateRange?: string;
+    isTechNews?: boolean;
 };
 
 const READINGTIME = [
@@ -54,7 +55,8 @@ const validateQueryParams = (searchParams: URLSearchParams): QueryParams => {
     const author = searchParams.get("author") || "";
     const readingTime = searchParams.get("readingTime") || "";
     const dateRange = searchParams.get("dateRange") || "";
-    return { page, limit, category, sortBy, search, author, readingTime, dateRange };
+    const isTechNews = searchParams.get("technews") === "true";
+    return { page, limit, category, sortBy, search, author, readingTime, dateRange, isTechNews };
 }
 function clamp(num: number, min: number, max: number): number {
     // it will ensure that the number is within the range of min and max
@@ -109,6 +111,13 @@ const buildQuery = (params: QueryParams): mongoose.FilterQuery<typeof Blog> => {
 
     // Remove that blog which is not approved
     query.status = "approved";
+    // If technews is true, the category should be "Tech-news" only
+    if (params.isTechNews) {
+        query.category = "Tech-news";
+    } else {
+        // remove technews category from the query
+        // query.category = { $ne: "Tech-news" }; // may be in future
+    }
 
     return query;
 }

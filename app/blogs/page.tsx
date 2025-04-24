@@ -3,10 +3,11 @@ import React, { Suspense, use, useCallback, useEffect, useState } from 'react'
 import { StatsType } from '@/types/blogs-types';
 import { BlogPostType, UserType, stateType } from '@/types/blogs-types';
 import { useInView } from '@react-spring/web';
-import HomePageBlogCollection from './components/HomePageBlogCollection';
 import { useSearchParams } from 'next/navigation';
 import LoadingEffect from '@/lib/LoadingEffect';
 import { useTheme } from '@/context/ThemeContext';
+import HomePageBlogCollection from '@/app/blogs/components/HomePageBlogCollection';
+
 interface PostsData {
     success: boolean;
     data: BlogPostType[];
@@ -20,7 +21,7 @@ interface PostsData {
     };
 }
 
-const BlogCollectionComponent = () => {
+const BlogCollectionComponent = ({ techNews = false }: { techNews?: boolean }) => {
     const [ref, inView] = useInView();
     const searchParams = useSearchParams();
     const searchTerm = searchParams.get('search') || '';
@@ -56,7 +57,8 @@ const BlogCollectionComponent = () => {
             resultsPerPage: 9
         },
         statsLoading: true,
-        initialized: false
+        initialized: false,
+        techNews: techNews,
     });
     const [searchLoading, setSearchLoading] = useState(false);
     const { isDarkMode } = useTheme();
@@ -85,7 +87,7 @@ const BlogCollectionComponent = () => {
     const fetchPosts = async () => {
         try {
             setState(prev => ({ ...prev, loading: true, error: null }));
-            const res = await fetch(`/api/blogs?page=${state.page}&limit=${state.limit}&sortBy=${state.sortBy}&search=${state.searchTerm}&category=${state.category}&author=${state.author}&readingTime=${state.readingTime}&dateRange=${state.dateRange}`);
+            const res = await fetch(`/api/blogs?page=${state.page}&limit=${state.limit}&sortBy=${state.sortBy}&search=${state.searchTerm}&category=${state.category}&author=${state.author}&readingTime=${state.readingTime}&dateRange=${state.dateRange}&technews=${state.techNews}`);
             const data: PostsData = await res.json();
 
             setState(prev => ({
@@ -142,10 +144,10 @@ const BlogCollectionComponent = () => {
     );
 }
 
-const BlogCollection = () => {
+const BlogCollection = ({ techNews = false }: { techNews?: boolean }) => {
     return (
         <Suspense fallback={<LoadingEffect />}>
-            <BlogCollectionComponent />
+            <BlogCollectionComponent techNews={techNews} />
         </Suspense>
     )
 
