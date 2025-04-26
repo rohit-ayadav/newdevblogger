@@ -20,7 +20,10 @@ export async function POST(request: NextRequest) {
     const user = await User.findOne({ email: session.user.email });
     if (!user) return sendResponse(404, "User not found");
 
-    // console.log(`User theme updated to ${theme} for ${JSON.stringify(session.user)}`);
+    user.theme = theme;
+    await user.save();
+
+    console.log(`User theme updated to ${theme} for ${JSON.stringify(session.user)}`);
     return user ? sendResponse(200, "Theme updated successfully") : sendResponse(404, "User not found");
   } catch {
     return sendResponse(500, "An error occurred while updating the theme");
@@ -33,6 +36,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const user = await User.findOne({ email: session.user.email });
+    console.log(`\nUser theme is ${user.theme}`);
     return user ? sendResponse(200, "Theme fetched successfully", { theme: user.theme }) : sendResponse(404, "User not found");
   } catch {
     return sendResponse(500, "An error occurred while fetching the theme");

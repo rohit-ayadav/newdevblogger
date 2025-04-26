@@ -1,18 +1,17 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { signOut, useSession } from "next-auth/react";
+import React, { useState } from "react";
+import { useSession } from "next-auth/react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { User, BookOpen, Settings, ExternalLink, LayoutDashboard } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { User, Settings, ExternalLink, LayoutDashboard } from "lucide-react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useTheme } from "@/context/ThemeContext";
 import { ProfileCard } from "./ProfileCard";
 import { ProfileInfoTab } from "./ProfileInfoTab";
 import { SettingsTab } from "./SettingsTab";
-import { BlogPostType, UserType } from "@/types/blogs-types";
+import { UserType } from "@/types/blogs-types";
 import { ErrorFallback } from "../id-omponent/ErrorFallback";
 import toast from "react-hot-toast";
 import changePassword from "@/action/changePassword";
-import Link from "next/link";
 
 interface UserProfileProps {
     userData: UserType;
@@ -20,13 +19,11 @@ interface UserProfileProps {
 
 const ProfileCTA = ({ username, isDarkMode }: { username: string, isDarkMode: boolean }) => {
     const router = useRouter();
-
     return (
         <div className={`mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
             <div
                 onClick={() => router.push('/dashboard')}
-                className={`flex items-center justify-between p-4 rounded-lg cursor-pointer ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'
-                    } transition-colors duration-200`}
+                className={`flex items-center justify-between p-4 rounded-lg cursor-pointer ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'} transition-colors duration-200`}
             >
                 <div>
                     <h3 className="font-semibold text-lg">Manage Your Blogs</h3>
@@ -39,8 +36,7 @@ const ProfileCTA = ({ username, isDarkMode }: { username: string, isDarkMode: bo
 
             <div
                 onClick={() => router.push(`/author/${username}`)}
-                className={`flex items-center justify-between p-4 rounded-lg cursor-pointer ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'
-                    } transition-colors duration-200`}
+                className={`flex items-center justify-between p-4 rounded-lg cursor-pointer ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'} transition-colors duration-200`}
             >
                 <div>
                     <h3 className="font-semibold text-lg">Public Profile</h3>
@@ -59,7 +55,24 @@ export default function UserProfile({ userData }: UserProfileProps) {
     const { data: session } = useSession();
     const [error, setError] = useState<string | null>(null);
     const [editMode, setEditMode] = useState(false);
-    const [activeTab, setActiveTab] = useState("profile");
+
+    // Use search params to persist the active tab in the URL
+    const searchParams = useSearchParams();
+    const router = useRouter();
+    const pathname = usePathname();
+
+    // Get tab from URL or default to "profile"
+    const activeTab = searchParams.get("tab") || "profile";
+
+    // Update the URL when tab changes without full page reload
+    const handleTabChange = (value: string) => {
+        // Create new search params instance
+        const params = new URLSearchParams(searchParams.toString());
+        params.set("tab", value);
+
+        // Update the URL with the new search parameters
+        router.replace(`${pathname}?${params.toString()}`);
+    };
 
     const manageLinkedAccounts = () => {
         toast.error('We are working on this feature. Please check back later.');
@@ -73,7 +86,7 @@ export default function UserProfile({ userData }: UserProfileProps) {
                 <div className="md:col-span-1">
                     {userData && (
                         <ProfileCard
-                            userData={userData as UserType}
+                            userData={userData}
                             editMode={editMode}
                             setEditMode={setEditMode}
                         />
@@ -82,7 +95,7 @@ export default function UserProfile({ userData }: UserProfileProps) {
                 <div className="md:col-span-2">
                     <Tabs
                         value={activeTab}
-                        onValueChange={setActiveTab}
+                        onValueChange={handleTabChange}
                         className="w-full"
                     >
                         <TabsList className={`grid w-full grid-cols-2 gap-4 ${isDarkMode ? 'bg-gray-800' : 'bg-gray-100'}`}>
@@ -90,8 +103,7 @@ export default function UserProfile({ userData }: UserProfileProps) {
                                 value="profile"
                                 className={`flex items-center justify-center ${isDarkMode
                                     ? 'data-[state=active]:bg-gray-700 data-[state=active]:text-white data-[state=inactive]:text-gray-400'
-                                    : 'data-[state=active]:bg-white'
-                                    }`}
+                                    : 'data-[state=active]:bg-white'}`}
                             >
                                 <User className="w-4 h-4 mr-2" /> Profile
                             </TabsTrigger>
@@ -99,8 +111,7 @@ export default function UserProfile({ userData }: UserProfileProps) {
                                 value="settings"
                                 className={`flex items-center justify-center ${isDarkMode
                                     ? 'data-[state=active]:bg-gray-700 data-[state=active]:text-white data-[state=inactive]:text-gray-400'
-                                    : 'data-[state=active]:bg-white'
-                                    }`}
+                                    : 'data-[state=active]:bg-white'}`}
                             >
                                 <Settings className="w-4 h-4 mr-2" /> Settings
                             </TabsTrigger>
@@ -112,7 +123,7 @@ export default function UserProfile({ userData }: UserProfileProps) {
                         >
                             {error && <div className="text-red-500 text-sm mb-4">{error}</div>}
                             <ProfileInfoTab
-                                userData={userData as UserType}
+                                userData={userData}
                                 editMode={editMode}
                                 setEditMode={setEditMode}
                                 isDarkMode={isDarkMode}
