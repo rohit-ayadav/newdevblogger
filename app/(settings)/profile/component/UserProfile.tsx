@@ -22,7 +22,7 @@ const ProfileCTA = ({ username, isDarkMode }: { username: string, isDarkMode: bo
     return (
         <div className={`mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
             <div
-                onClick={() => router.push('/dashboard')}
+                onClick={() => router.push('/dashboard?view=blogs')}
                 className={`flex items-center justify-between p-4 rounded-lg cursor-pointer ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-gray-100 hover:bg-gray-200'} transition-colors duration-200`}
             >
                 <div>
