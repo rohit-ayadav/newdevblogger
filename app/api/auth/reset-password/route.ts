@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
     }
 
     if (decryptedEmail !== user.email) {
+        console.log(`\ndecyptedEmail: ${decryptedEmail} user.email: ${user.email}`);
         return NextResponse.json({
             error: "You are not authorized to reset the password"
         }, { status: 400 });
@@ -55,26 +56,26 @@ export async function POST(req: NextRequest) {
 
     if (user.resetPasswordToken !== decryptedToken) {
         return NextResponse.json({
-            error: "You are not authorized to reset the password"
+            error: "Invalid token. Please request a new password reset link"
         }, { status: 400 });
     }
 
-    // user.password = newPassword;
-    // user.resetPasswordToken = "";
-    // user.resetPasswordExpires = 0;
-    // user.isEmailVerified = true;
-    // user.updatedAt = new Date();
-    // await user.save();
-    await User.updateOne(
-        { _id: user._id },
-        {
-            password: newPassword,
-            resetPasswordToken: "",
-            resetPasswordExpires: 0,
-            isEmailVerified: true,
-            updatedAt: new Date(),
-        }
-    );
+    user.password = newPassword;
+    user.resetPasswordToken = "";
+    user.resetPasswordExpires = 0;
+    user.isEmailVerified = true;
+    user.updatedAt = new Date();
+    await user.save();
+    // await User.updateOne(
+    //     { _id: user._id },
+    //     {
+    //         password: newPassword,
+    //         resetPasswordToken: "",
+    //         resetPasswordExpires: 0,
+    //         isEmailVerified: true,
+    //         updatedAt: new Date(),
+    //     }
+    // );
 
     sendEmail({
         to: user.email,

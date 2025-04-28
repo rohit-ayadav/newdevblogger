@@ -23,7 +23,7 @@ const resetPasswordRequest = async (user: any, req: NextRequest): Promise<{ mess
     // 10 minutes in milliseconds
     const TokenExpirationTime = 10 * 60 * 1000; // 10 minutes
 
-    if (tokenGeneratedAt && (currentTime - tokenGeneratedAt) < TokenExpirationTime) {
+    if ((tokenGeneratedAt && (currentTime - tokenGeneratedAt) < TokenExpirationTime) && user.resetPasswordToken) {
         resetPasswordToken = user.resetPasswordToken;
         subject = "Password Reset Request for DevBlogger 01 (Extra Email)";
     } else {
