@@ -231,8 +231,6 @@ const CheatSheets = () => {
           </div>
         </div>
 
-        {/* # Why it is not showing in the production, 404 error */}
-
         {/* Featured cheatsheets */}
         <div className="mb-12">
           <div className="flex items-center mb-6">

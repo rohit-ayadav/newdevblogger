@@ -17,7 +17,7 @@ function generateUsername(fullName: string): string {
 
 export async function GET() {
     await connectDB();
-    // Fetch all user who wrote at least one blog post
+    // Fetch all user who wrote at least one blog postz
     // update username for those who don't have username
     let authors = await User.find({}).lean();
     for (const author of authors) {
@@ -41,8 +41,8 @@ export async function GET() {
             <url>
                 <loc>${BASE_URL}/author/${author.username}</loc>
                 <lastmod>${new Date().toISOString()}</lastmod>
-                <changefreq>daily</changefreq>
-                <priority>0.9</priority>
+                <changefreq>weekly</changefreq>
+                <priority>0.8</priority>
             </url>
         `).join('')}
     </urlset>`;
