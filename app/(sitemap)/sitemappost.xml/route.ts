@@ -60,31 +60,3 @@ function generateSitemap(posts: BlogPostType[]) {
     </url>`).join('')}
 </urlset>`;
 }
-
-// For dynamic sitemap generation based on categories
-export async function generateCategorySitemap() {
-    try {
-        await connectDB();
-
-        // Get all unique category tags from approved posts
-        const categories = await Blog.distinct("tags", { category: "approved" });
-
-        const sitemapIndex = `<?xml version="1.0" encoding="UTF-8"?>
-<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <sitemap>
-        <loc>${BASE_URL}/sitemap.xml</loc>
-        <lastmod>${new Date().toISOString()}</lastmod>
-    </sitemap>
-    ${categories.map(category => `
-    <sitemap>
-        <loc>${BASE_URL}/sitemaps/category-${encodeURIComponent(category)}.xml</loc>
-        <lastmod>${new Date().toISOString()}</lastmod>
-    </sitemap>`).join('')}
-</sitemapindex>`;
-
-        return sitemapIndex;
-    } catch (error) {
-        console.error("Category sitemap generation error:", error);
-        throw error;
-    }
-}
