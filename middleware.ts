@@ -50,7 +50,7 @@ export const config = {
   matcher: [
     "/create/:path*",
     "/profile/:path*",
-    "/dashboard/:path*",
+    "/dashboard",
     "/edit/:path*",
     "/login",
     "/signup",
@@ -58,3 +58,6 @@ export const config = {
     "/forgot-password",
   ],
 };
+
+//
+// "/dashboard/:path*",
