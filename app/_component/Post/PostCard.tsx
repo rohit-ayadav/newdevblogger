@@ -110,11 +110,27 @@ export const PostCard = ({ post, user, showActions = false, author }: BlogPostCa
         }
     };
 
-    const truncateText = (text: string, maxLength: number) => {
-        // Strip HTML tags
-        const plainText = text.replace(/<[^>]+>/g, '');
+    const truncateText = (text: string, maxLength: number): string => {
+        if (!text) return '';
+
+        // 1. Remove HTML tags
+        let plainText = text.replace(/<[^>]+>/g, '');
+
+        // 2. Remove Markdown headings (#, ##, ###, etc. at the beginning of lines)
+        plainText = plainText.replace(/^#+\s*/gm, '');
+
+        // 3. Remove bold, italic, code markdown
+        plainText = plainText.replace(/(\*\*|__)(.*?)\1|(\*|_)(.*?)\3|`([^`]+)`/g, '$2$4$5').trim();
+
         if (plainText.length <= maxLength) return plainText;
-        return plainText.substring(0, maxLength) + '...';
+
+        // 4. Truncate without cutting in the middle of a word
+        const ellipsisIndex = plainText.lastIndexOf(' ', maxLength);
+        const safeTruncate = ellipsisIndex !== -1
+            ? plainText.substring(0, ellipsisIndex)
+            : plainText.substring(0, maxLength);
+
+        return safeTruncate.trim() + '...';
     };
 
     const handleDelete = async (e: React.MouseEvent, id: string) => {
@@ -215,7 +231,7 @@ export const PostCard = ({ post, user, showActions = false, author }: BlogPostCa
 
                     <p
                         className={`text-xs sm:text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} line-clamp-2 sm:line-clamp-3 mb-2 flex-1`}
-                        title={truncateText(post.content, 250)}
+                        title={truncateText(post.content, 320)}
                     >
                         {truncateText(post.content, user ? 120 : 250)}
                     </p>
