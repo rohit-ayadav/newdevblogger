@@ -73,9 +73,9 @@ const Newsletter = () => {
             <Toaster />
             <div className="flex items-center gap-2">
                 <Mail className="h-5 w-5 text-blue-500 dark:text-blue-400" />
-                <AlertTitle className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+                <span className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                     Stay updated!
-                </AlertTitle>
+                </span>
             </div>
 
             <AlertDescription>

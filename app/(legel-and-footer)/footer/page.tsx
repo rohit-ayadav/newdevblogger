@@ -142,11 +142,10 @@ const Footer = () => {
 
             {/* Quick Links */}
             <div>
-              <h4 className="text-lg font-semibold mb-4 border-b border-gray-700 pb-2">Quick Links</h4>
-              <nav>
+              <span className="text-lg font-semibold mb-4 border-b border-gray-700 pb-2 block">Quick Links</span><nav>
                 <ul className="space-y-2">
                   {[
-                    ['Home', '/'],
+                    // ['Home', '/'],
                     ['About', '/about'],
                     ['Blogs', '/blogs'],
                     ['Write', '/create'],
@@ -167,8 +166,7 @@ const Footer = () => {
 
             {/* Resources */}
             <div>
-              <h4 className="text-lg font-semibold mb-4 border-b border-gray-700 pb-2">Resources</h4>
-              <nav>
+              <span className="text-lg font-semibold mb-4 border-b border-gray-700 pb-2 block">Resources</span><nav>
                 <ul className="space-y-2">
                   {[
                     // ['Documentation', '/docs'],
@@ -193,7 +191,7 @@ const Footer = () => {
 
             {/* Newsletter Section */}
             <div>
-              <h4 className="text-lg font-semibold mb-4 border-b border-gray-700 pb-2">Stay Updated</h4>
+              <span className="text-lg font-semibold mb-4 border-b border-gray-700 pb-2 block">Stay Updated</span>
               <p className="text-sm mb-4 opacity-85">
                 Subscribe to our newsletter for the latest updates and articles.
               </p>
