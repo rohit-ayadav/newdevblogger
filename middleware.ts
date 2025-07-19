@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt"; export async function middleware(req: NextRequest) {
+import { getToken } from "next-auth/jwt";
+export async function middleware(req: NextRequest) {
 
   const { pathname } = req.nextUrl;
   const loginUrl = new URL("/login", req.url);

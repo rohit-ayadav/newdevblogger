@@ -5,12 +5,6 @@
     "description": "Your go-to platform for tech blogs, coding tutorials, and developer insights. Join the global dev community to read, write, and share knowledge.",
     "start_url": "/blogs",
     "scope": "/",
-    "display": "standalone",
-    "display_override": [
-        "standalone",
-        "minimal-ui",
-        "fullscreen"
-    ],
     "background_color": "#ffffff",
     "theme_color": "#ffffff",
     "dark_theme_color": "#0f172a",
