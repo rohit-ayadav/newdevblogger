@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Image, AlertCircle, Loader2, Search } from "lucide-react";
 import { fetchUnsplashImages } from '@/utils/getUnsplashImages';
+import { toast } from '@/hooks/use-toast';
+import { Toaster } from '@/components/ui/toaster';
 
 interface UnsplashImage {
     id: string;
@@ -42,6 +44,9 @@ const ThumbnailSection = ({
     const [query, setQuery] = useState<string>("");
     const [images, setImages] = useState<UnsplashImage[]>([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isUploadModalOpen, setIsUploadModelOpen] = useState(false);
+    const [selectedUploadImage, setSelectedUploadImage] = useState<File | null>(null);
+    const [isUploading, setIsUploading] = useState(false);
     const [selectedImage, setSelectedImage] = useState<UnsplashImage | null>(null);
     const [page, setPage] = useState(1);
 
@@ -123,9 +128,53 @@ const ThumbnailSection = ({
         setIsModalOpen(false);
     };
 
+    const handleUploadImageToCloudinary = async () => {
+        // formData which contain image file
+        const formData = new FormData();
+        setIsUploading(true);
+        setError(null);
+        if (selectedUploadImage) {
+            formData.append('image', selectedUploadImage);
+        } else {
+            setIsUploading(false);
+            toast({
+                title: 'Upload Failed',
+                description: 'No image selected for upload.',
+                variant: 'destructive',
+            });
+            setError('No image selected for upload.');
+            return;
+        }
+        const response = await fetch('/api/uploadimages', {
+            method: 'POST',
+            body: formData,
+        });
+        if (!response.ok) {
+            const errorData = await response.json();
+            setIsUploading(false);
+            toast({
+                title: 'Upload Failed',
+                description: errorData.error || 'Failed to upload image',
+                variant: 'destructive',
+            });
+            setError(errorData.error || 'Failed to upload image');
+            return;
+        }
+        const data = await response.json();
+        setThumbnail(data.imageUrl);
+        setThumbnailCredit && setThumbnailCredit('Uploaded Image');
+        setIsUploadModelOpen(false);
+        setSelectedUploadImage(null);
+        toast({
+            title: 'Image Uploaded',
+            description: 'Your image has been uploaded successfully.',
+            variant: 'default',
+        });
+    };
 
     return (
         <>
+            <Toaster />
             <Card className="w-full mt-2 mb-2 sm:mt-3 sm:mb-3">
                 <CardHeader className="flex flex-row items-center space-y-0 pb-2 px-3 sm:px-6">
                     <Image className="w-4 h-4 sm:w-5 sm:h-5 mr-2 text-muted-foreground" />
@@ -145,6 +194,13 @@ const ThumbnailSection = ({
                                 value={thumbnail || ''}
                                 className="w-full text-base sm:text-lg bg-background"
                             />
+                            <Button
+                                variant="outline"
+                                className="shrink-0"
+                                onClick={() => setIsUploadModelOpen(true)}
+                            >
+                                Upload
+                            </Button>
                             <Button
                                 variant="outline"
                                 className="shrink-0"
@@ -275,6 +331,39 @@ const ThumbnailSection = ({
                                 Search for images to get started
                             </p>
                         )}
+                    </div>
+                </DialogContent>
+            </Dialog>
+            <Dialog open={isUploadModalOpen} onOpenChange={setIsUploadModelOpen}>
+                <DialogContent className="max-w-2xl">
+                    <DialogHeader>
+                        <DialogTitle>Upload Thumbnail Image</DialogTitle>
+                    </DialogHeader>
+                    <div className="space-y-4">
+                        <Input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                                const file = e.target.files?.[0] || null;
+                                setSelectedUploadImage(file);
+                            }}
+                        />
+                        {selectedUploadImage && (
+                            <p className="text-sm text-muted-foreground">
+                                Selected: {selectedUploadImage.name}
+                            </p>
+                        )}
+                        <Button
+                            onClick={handleUploadImageToCloudinary}
+                            disabled={!selectedUploadImage || isUploading}
+                            className="w-full"
+                        >
+                            {isUploading ? (
+                                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                            ) : (
+                                'Upload Image'
+                            )}
+                        </Button>
                     </div>
                 </DialogContent>
             </Dialog>

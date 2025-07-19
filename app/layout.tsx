@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { Toaster } from 'react-hot-toast';
+import { Toaster as T } from '@/components/ui/toaster';
 import { Analytics } from "@vercel/analytics/react"
 import { ThemeProvider } from "@/context/ThemeContext";
 import Script from "next/script";
@@ -234,6 +235,7 @@ export default function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}>
         <Toaster position="top-right" reverseOrder={false} />
+        <T />
         <ThemeProvider>
           <SessionWrapper>
             <Navbar />

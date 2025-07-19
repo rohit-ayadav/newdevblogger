@@ -40,11 +40,12 @@ export async function POST(request: NextRequest) {
             }
         )
         const { public_id } = result;
-        const imageUrl = cloudinary.url(public_id, {
-            transformation: [
-                { width: 200, height: 200, crop: "thumb" }
-            ]
-        });
+        // const imageUrl = cloudinary.url(public_id, {
+        //     transformation: [
+        //         { width: 200, height: 200, crop: "thumb" }
+        //     ]
+        // });
+        const imageUrl = cloudinary.url(public_id);
         return NextResponse.json({ imageUrl, public_id }, { status: 200 });
     } catch (error) {
         console.error("Error uploading image:", error);
