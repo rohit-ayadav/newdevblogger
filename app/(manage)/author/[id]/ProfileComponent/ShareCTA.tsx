@@ -2,8 +2,7 @@ import React from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Author } from './ProfileNew'
-import { Share2 } from 'lucide-react'
-import { SiFacebook, SiLinkedin } from 'react-icons/si'
+import { Facebook, Linkedin, Share2 } from 'lucide-react'
 import { Twitter } from 'react-feather'
 
 const ShareCTA = ({ author, copyProfileLink }: { author: Author; copyProfileLink: () => void }) => {
@@ -32,7 +31,7 @@ const ShareCTA = ({ author, copyProfileLink }: { author: Author; copyProfileLink
                                     size="icon"
                                     className="bg-transparent text-[#1877F2] border-[#1877F2] hover:bg-[#1877F2]/10"
                                 >
-                                    <SiFacebook className="h-5 w-5" />
+                                    <Facebook className="h-5 w-5" />
                                 </Button>
                                 <Button
                                     onClick={() => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`${window.location.origin}/author/${author.username}`)}`, '_blank')}
@@ -40,7 +39,7 @@ const ShareCTA = ({ author, copyProfileLink }: { author: Author; copyProfileLink
                                     size="icon"
                                     className="bg-transparent text-[#0A66C2] border-[#0A66C2] hover:bg-[#0A66C2]/10"
                                 >
-                                    <SiLinkedin className="h-5 w-5" />
+                                    <Linkedin className="h-5 w-5" />
                                 </Button>
                                 <Button
                                     onClick={copyProfileLink}

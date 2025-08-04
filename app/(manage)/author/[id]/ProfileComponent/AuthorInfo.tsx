@@ -10,10 +10,10 @@ import ReactMarkdown from 'react-markdown';
 import remarkBreaks from 'remark-breaks';
 import remarkGfm from 'remark-gfm';
 import remarkDirective from 'remark-directive';
-import rehypeHighlight from 'rehype-highlight';
+// import rehypeHighlight from 'rehype-highlight';
 import rehypeRaw from 'rehype-raw';
 import remarkEmoji from 'remark-emoji';
-import 'highlight.js/styles/github-dark.css'; // Theme for syntax highlighting
+// import 'highlight.js/styles/github-dark.css'; // Theme for syntax highlighting
 
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -40,7 +40,8 @@ export const AuthorInfo = ({ author, authorPostsLength, totalStats }: { author: 
                         <ReactMarkdown
                             className="prose prose-gray dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 text-lg"
                             remarkPlugins={[remarkBreaks, remarkGfm, remarkDirective, remarkEmoji]}
-                            rehypePlugins={[rehypeHighlight, rehypeRaw]}
+                            rehypePlugins={[rehypeRaw]}
+                            // rehypePlugins={[rehypeHighlight, rehypeRaw]}
                             components={{
                                 h1: ({ node, ...props }) => <h1 className="text-2xl font-bold" {...props} />,
                                 h2: ({ node, ...props }) => <h2 className="text-xl font-semibold" {...props} />,

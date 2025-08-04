@@ -21,7 +21,8 @@ function urlBase64ToUint8Array(base64String: string): Uint8Array {
     for (let i = 0; i < rawData.length; ++i) {
       outputArray[i] = rawData.charCodeAt(i);
     }
-    return outputArray;
+    // return outputArray;
+    return outputArray as Uint8Array;
   } catch (error) {
     console.error("Failed to convert base64 string:", error);
     throw new Error("Invalid base64 string provided");
@@ -80,7 +81,7 @@ async function enablePushNotifications(): Promise<void> {
 
       subscription = await registration.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(vapidPublicKey)
+        applicationServerKey: urlBase64ToUint8Array(vapidPublicKey) as unknown as BufferSource
       });
     }
 

@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { ErrorMessage } from '../../../lib/ErrorMessage';
 import { UserType } from '@/types/blogs-types';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { GlobeIcon, LinkedinIcon, GithubIcon, TwitterIcon, InstagramIcon, FacebookIcon, SearchIcon } from 'lucide-react';

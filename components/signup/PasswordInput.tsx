@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { Lock } from 'lucide-react';
+import { Eye, EyeClosedIcon, Lock } from 'lucide-react';
 
 interface PasswordInputProps {
     name: string;
@@ -53,9 +53,9 @@ const PasswordInput = ({
                 aria-label={showPassword ? "Hide password" : "Show password"}
             >
                 {showPassword ? (
-                    <FaEyeSlash className="h-5 w-5" />
+                    <EyeClosedIcon className="h-5 w-5" />
                 ) : (
-                    <FaEye className="h-5 w-5" />
+                    <Eye className="h-5 w-5" />
                 )}
             </button>
         </div>

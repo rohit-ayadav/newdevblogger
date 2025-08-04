@@ -3,10 +3,11 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { ArrowLeft, Share2, Twitter } from 'react-feather'
 import { Sheet, SheetTrigger, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet'
-import { SiFacebook, SiLinkedin, SiReddit, SiWhatsapp } from 'react-icons/si'
 import { Input } from '@/components/ui/input'
 import { Moon, Sun } from 'react-feather'
 import { Author } from './ProfileNew'
+import { Facebook, Linkedin, MessageCircle } from 'lucide-react'
+import { FaReddit } from 'react-icons/fa'
 
 interface HeaderProps {
     author: Author;
@@ -92,7 +93,7 @@ const Header = ({ author, isDarkMode, toggleDarkMode, isShareSheetOpen, setIsSha
                                         size="icon"
                                         className="bg-transparent text-[#1877F2] border-[#1877F2] hover:bg-[#1877F2]/10"
                                     >
-                                        <SiFacebook className="h-5 w-5" />
+                                        <Facebook className="h-5 w-5" />
                                     </Button>
                                     <Button
                                         onClick={() => window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`${window.location.origin}/author/${author.username}`)}`, '_blank')}
@@ -100,7 +101,7 @@ const Header = ({ author, isDarkMode, toggleDarkMode, isShareSheetOpen, setIsSha
                                         size="icon"
                                         className="bg-transparent text-[#0A66C2] border-[#0A66C2] hover:bg-[#0A66C2]/10"
                                     >
-                                        <SiLinkedin className="h-5 w-5" />
+                                        <Linkedin className="h-5 w-5" />
                                     </Button>
                                     <Button
                                         onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(`🚀 Check out this amazing author on DevBlogger! 📖\n\n${window.location.origin}/author/${author.username}\n\nThey write insightful blogs on various topics. Have a look! 🔥`)}`, '_blank')}
@@ -108,7 +109,7 @@ const Header = ({ author, isDarkMode, toggleDarkMode, isShareSheetOpen, setIsSha
                                         size="icon"
                                         className="bg-transparent text-[#25D366] border-[#25D366] hover:bg-[#25D366]/10"
                                     >
-                                        <SiWhatsapp className="h-5 w-5" />
+                                        <MessageCircle className="h-5 w-5" />
                                     </Button>
                                     <Button
                                         onClick={() => window.open(`https://www.reddit.com/submit?url=${encodeURIComponent(`${window.location.origin}/author/${author.username}`)}&title=Check%20out%20this%20author%20profile!`, '_blank')}
@@ -116,7 +117,7 @@ const Header = ({ author, isDarkMode, toggleDarkMode, isShareSheetOpen, setIsSha
                                         size="icon"
                                         className="bg-transparent text-[#FF4500] border-[#FF4500] hover:bg-[#FF4500]/10"
                                     >
-                                        <SiReddit className="h-5 w-5" />
+                                        <FaReddit />
                                     </Button>
                                 </div>
                             </div>

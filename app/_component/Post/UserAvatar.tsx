@@ -6,6 +6,7 @@ import { cleanMarkdown, isValidUrl } from '@/lib/common-function';
 import { UserType } from '@/types/blogs-types';
 import Link from 'next/link';
 import React from 'react';
+import { UserCircle2 } from 'lucide-react';
 
 
 const UserAvatar = ({
@@ -58,7 +59,7 @@ const UserAvatar = ({
                                 onError={() => setImageError(true)}
                             />
                             <AvatarFallback>
-                                <FaUserCircle className="w-full h-full text-gray-400" />
+                                <UserCircle2 className="w-full h-full text-gray-400" />
                             </AvatarFallback>
                         </>
                     )}

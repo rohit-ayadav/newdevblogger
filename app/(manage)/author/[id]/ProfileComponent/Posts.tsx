@@ -1,12 +1,9 @@
-import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Search, X } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
-import { SiInstagram, SiGithub } from 'react-icons/si';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { BookOpen, Eye, Heart } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
 import { BlogPostType, UserType } from '@/types/blogs-types';
 import { Author } from './ProfileNew';
 import PostCard from '@/app/_component/Post/PostCard';

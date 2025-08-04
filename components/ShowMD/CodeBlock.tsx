@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import SyntaxHighlighter from "react-syntax-highlighter";
 import { atomDark } from 'react-syntax-highlighter/dist/cjs/styles/prism';
-import { vs } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
+// import { vs } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
 import { useTheme } from "@/context/ThemeContext";
 
 // Define common file extensions to language mappings
@@ -346,7 +346,8 @@ const CodeBlock = ({ className, children }: { className?: string; children: Reac
 
             <SyntaxHighlighter
                 language={language}
-                style={theme === "dark" ? atomDark : vs}
+                // style={theme === "dark" ? atomDark : vs}
+                style={atomDark}
                 customStyle={{
                     margin: 0,
                     padding: '1rem',

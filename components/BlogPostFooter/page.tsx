@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Heart, Eye, Share2, FileText, Download } from 'lucide-react';
+import { Heart, Eye, Share2, FileText, Download, Facebook, X, Linkedin } from 'lucide-react';
 import { HeartFilledIcon } from '@radix-ui/react-icons';
 import { SiWhatsapp, SiFacebook, SiX, SiLinkedin } from 'react-icons/si';
 import { toast } from 'react-hot-toast';
@@ -72,28 +72,28 @@ const BlogPostFooter = ({
   const shareOptions: ShareOption[] = [
     {
       name: 'WhatsApp',
-      icon: <SiWhatsapp className="h-4 w-4" />,
+      icon: <SiWhatsapp />,
       color: 'hover:text-green-500',
       getShareUrl: (url, title) =>
         `https://wa.me/?text=${encodeURIComponent(`📖 ${title}\n\n👉 ${url}`)}`,
     },
     {
       name: 'Facebook',
-      icon: <SiFacebook className="h-4 w-4" />,
+      icon: <Facebook className="h-4 w-4" />,
       color: 'hover:text-blue-600',
       getShareUrl: (url) =>
         `https://www.facebook.com/sharer/sharer.php?u=${url}`,
     },
     {
       name: 'Twitter',
-      icon: <SiX className="h-4 w-4" />,
+      icon: <X className="h-4 w-4" />,
       color: 'hover:text-gray-800',
       getShareUrl: (url, title) =>
         `https://twitter.com/intent/tweet?url=${url}&text=${encodeURIComponent(title)}`,
     },
     {
       name: 'LinkedIn',
-      icon: <SiLinkedin className="h-4 w-4" />,
+      icon: <Linkedin className="h-4 w-4" />,
       color: 'hover:text-blue-700',
       getShareUrl: (url, title) =>
         `https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${encodeURIComponent(title)}`,
