@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { AlertCircle, CheckCircle, RefreshCcw, XCircle } from 'lucide-react';
 import { BlogPostType } from '@/types/blogs-types';
 import { Toaster } from "@/components/ui/toaster"
+import { formatDate } from '@/utils/date-formatter';
 
 const Approval = () => {
     const [posts, setPosts] = useState<BlogPostType[]>([]);
@@ -144,14 +145,6 @@ const Approval = () => {
         // if not included in the getPendingBlogs response
     }, []);
 
-    const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-        });
-    };
-
     return (
         <div className="container mx-auto py-6 px-4 md:px-6">
             <Toaster />
@@ -245,6 +238,15 @@ const Approval = () => {
                                     >
                                         <XCircle size={16} className="mr-1" />
                                         Reject
+                                    </Button>
+                                    
+                                    <Button
+                                        variant="link"
+                                        size="sm"
+                                        className="text-blue-600 hover:text-blue-700"
+                                        onClick={() => window.open(`/blog/${post._id}`, '_blank')}
+                                    >
+                                        View Blog Post
                                     </Button>
                                     <Button
                                         variant="default"
