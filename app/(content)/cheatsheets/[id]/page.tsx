@@ -46,6 +46,11 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
     }
 }
 
+export async function generateStaticParams() {
+    const files = await fs.readdir(path.join(process.cwd(), 'content/cheatsheets'));
+    return files.map(file => ({ id: file.replace(/\.md$/, '') }));
+}
+
 export default async function MDPage({ params }: { params: { id: string } }) {
     const { id } = params;
     try {
