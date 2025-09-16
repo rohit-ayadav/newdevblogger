@@ -70,7 +70,6 @@ async function enablePushNotifications(): Promise<void> {
     if (permission !== "granted") {
       throw new Error("Notification permission denied");
     }
-
     let subscription = await registration.pushManager.getSubscription();
 
     if (!subscription) {
