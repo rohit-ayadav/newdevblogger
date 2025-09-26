@@ -3,7 +3,7 @@ import { detectContentType } from '@/lib/detectContentType';
 import { marked } from 'marked';
 
 export const generateSimplePdf = async (options) => {
-  // const { default: jsPDF } = await import('jspdf');
+  const { default: jsPDF } = await import('jspdf');
 
   const {
     title,
