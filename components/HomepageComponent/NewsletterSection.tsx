@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { PenTool } from 'react-feather';
 import { motion } from 'framer-motion';
 import { useToast } from '@/hooks/use-toast';
-import { cn } from '@/lib/utils'; // Assuming you have this utility
+import { cn } from '@/lib/utils'; 
 
 export const NewsletterSection = () => {
     const { isDarkMode } = useTheme();

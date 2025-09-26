@@ -24,7 +24,6 @@ const FeaturedAuthors = dynamic(() => import('./FeaturedAuthors'), { ssr: false 
 const CategoryBrowser = dynamic(() => import('./CategoryBrowser'));
 const NewsletterSection = dynamic(() => import('./NewsletterSection').then(mod => mod.NewsletterSection));
 const RecentActivityFeed = dynamic(() => import('@/app/(manage)/author/RecentActivityFeed'));
-const ContentToolsSection = dynamic(() => import('./ContentToolsSection'));
 const TopCheatsheetsSection = dynamic(() => import('./TopCheatSheet'));
 const FeatureBlog = dynamic(() => import('./FeatureBlog'));
 
@@ -513,11 +512,6 @@ const HomePage = ({ posts, users, techNewsPosts, totalLikes, totalViews, totalBl
             {/* Priority 3 sections - lower importance */}
             {loadPriority3 && (
                 <>
-                    {/* Content Tools Section */}
-                    <Suspense fallback={<SectionLoading />}>
-                        <ContentToolsSection />
-                    </Suspense>
-
                     {/* Newsletter Section */}
                     <Suspense fallback={<SectionLoading />}>
                         <NewsletterSection />

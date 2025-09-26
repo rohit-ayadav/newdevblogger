@@ -63,7 +63,6 @@ export const Navbar = () => {
     { href: '/blogs', label: 'DevPosts', icon: Terminal },
     { href: '/create', label: 'Write', icon: Edit3 },
     { href: '/dashboard', label: 'Dashboard', icon: Code },
-    { href: '/tools', label: 'Tools', icon: CodeXml },
     { href: '/contacts', label: 'Community', icon: Users },
   ];
 

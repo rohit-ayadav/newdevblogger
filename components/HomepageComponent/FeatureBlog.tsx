@@ -3,19 +3,17 @@ import { Button } from '@/components/ui/button';
 import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { BlogPostType, UserType } from '@/types/blogs-types';
-import { cn } from '@/lib/utils'; // Assuming you have this utility
+import { cn } from '@/lib/utils';
 import PostCard from '@/app/_component/Post/PostCard';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const FeatureBlog = ({ posts, users, isDarkMode, isTechNews }: { posts: BlogPostType[], users: UserType[], isDarkMode: boolean, isTechNews: boolean }) => {
     return (
         <div>
-            {/* Featured Posts Section */}
             <section className={cn(
                 "py-16 relative overflow-hidden",
                 isDarkMode ? "bg-gray-800/50" : "bg-gray-50"
             )}>
-                {/* Background decoration elements */}
                 <div className="absolute inset-0 overflow-hidden pointer-events-none">
                     <div className={cn(
                         "absolute w-64 h-64 rounded-full opacity-20 blur-3xl",
@@ -75,8 +73,7 @@ const FeatureBlog = ({ posts, users, isDarkMode, isTechNews }: { posts: BlogPost
                         </Link>
                     </div>
 
-                    {/* Featured post cards with enhanced animation */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                         {posts.slice(0, 3).map((post, index) => (
                             <motion.div
                                 key={post._id || index}
@@ -113,7 +110,6 @@ const FeatureBlog = ({ posts, users, isDarkMode, isTechNews }: { posts: BlogPost
                         ))}
                     </div>
 
-                    {/* Load more button (only shown when there are more than 3 posts) */}
                     {posts.length > 3 && (
                         <div className="mt-12 text-center">
                             <Link href={isTechNews ? "/tech-news" : "/blogs"}>

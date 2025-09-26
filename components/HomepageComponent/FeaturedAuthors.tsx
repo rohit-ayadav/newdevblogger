@@ -11,7 +11,7 @@ import React, { useEffect, useState } from 'react';
 import { getTrendingAuthors } from '@/action/my-profile-action';
 import ShowProfileImage from '../ShowProfileImage';
 import { ChevronRight } from 'lucide-react';
-import { cn } from '@/lib/utils'; // Assuming you have this utility
+import { cn } from '@/lib/utils';
 
 const FeaturedAuthors = () => {
     const { isDarkMode } = useTheme();
